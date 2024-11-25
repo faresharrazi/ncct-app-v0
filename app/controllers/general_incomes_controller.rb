@@ -65,6 +65,6 @@ class GeneralIncomesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def general_income_params
-      params.expect(general_income: [ :title, :amount, :recurrent, :recurrence_frequency, :general_account_id ])
+      params.expect(general_income: [ :title, :amount, :general_account_id ])
     end
 end

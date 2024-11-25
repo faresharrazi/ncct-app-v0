@@ -8,6 +8,13 @@ class GeneralAccountsController < ApplicationController
 
   # GET /general_accounts/1 or /general_accounts/1.json
   def show
+    @general_account = GeneralAccount.first # Assuming only one global account
+    @general_incomes = @general_account.general_incomes
+    @general_expenses = @general_account.general_expenses
+
+    # For new income and expense forms
+    @general_income = GeneralIncome.new
+    @general_expense = GeneralExpense.new
   end
 
   # GET /general_accounts/new

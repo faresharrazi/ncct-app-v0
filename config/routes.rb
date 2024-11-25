@@ -5,16 +5,15 @@ Rails.application.routes.draw do
   resources :general_expenses
   resources :general_incomes
   resources :general_accounts
+
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
+  # Health check route
   get "up" => "rails/health#show", as: :rails_health_check
 
-  # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
-  # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
-  # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
+  # Root route points to GeneralAccount's show or index
+  root "general_accounts#show", id: 1 # Assuming you have one GeneralAccount with ID 1
 
-  # Defines the root path route ("/")
-  # root "posts#index"
+  # Alternative: if you want an index view instead:
+  # root "general_accounts#index"
 end
