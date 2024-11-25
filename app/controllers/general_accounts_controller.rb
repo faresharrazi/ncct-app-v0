@@ -57,6 +57,12 @@ class GeneralAccountsController < ApplicationController
     end
   end
 
+   def update_net_income
+    @general_account = GeneralAccount.first
+    @general_account.calculate_net_income
+    redirect_to @general_account, notice: "Net income updated successfully."
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_general_account
