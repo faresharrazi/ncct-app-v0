@@ -4,6 +4,11 @@ class TransactionsController < ApplicationController
   # GET /transactions or /transactions.json
   def index
     @transactions = Transaction.all
+    @transactions = @transactions.by_account(params[:account_id])
+    @transactions = @transactions.by_category(params[:category_id])
+    @transactions = @transactions.by_date_range(params[:start_date], params[:end_date])
+    @transactions = @transactions.by_amount_range(params[:min_amount], params[:max_amount])
+    @transactions = @transactions.search_by_name(params[:query])
   end
 
   # GET /transactions/1 or /transactions/1.json
