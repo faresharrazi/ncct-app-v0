@@ -1,0 +1,12 @@
+<% content_for :title, "Editing general income" %>
+
+<h1>Editing general income</h1>
+
+<%= render "form", general_income: @general_income %>
+
+<br>
+
+<div>
+  <%= link_to "Show this general income", @general_income %> |
+  <%= link_to "Back to general incomes", general_incomes_path %>
+</div>

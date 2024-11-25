@@ -1,0 +1,16 @@
+<p style="color: green"><%= notice %></p>
+
+<% content_for :title, "General incomes" %>
+
+<h1>General incomes</h1>
+
+<div id="general_incomes">
+  <% @general_incomes.each do |general_income| %>
+    <%= render general_income %>
+    <p>
+      <%= link_to "Show this general income", general_income %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New general income", new_general_income_path %>
