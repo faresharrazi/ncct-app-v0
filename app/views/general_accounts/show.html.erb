@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @general_account %>
+
+<div>
+  <%= link_to "Edit this general account", edit_general_account_path(@general_account) %> |
+  <%= link_to "Back to general accounts", general_accounts_path %>
+
+  <%= button_to "Destroy this general account", @general_account, method: :delete %>
+</div>

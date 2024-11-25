@@ -1,0 +1,12 @@
+<% content_for :title, "Editing general account" %>
+
+<h1>Editing general account</h1>
+
+<%= render "form", general_account: @general_account %>
+
+<br>
+
+<div>
+  <%= link_to "Show this general account", @general_account %> |
+  <%= link_to "Back to general accounts", general_accounts_path %>
+</div>

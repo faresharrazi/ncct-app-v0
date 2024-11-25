@@ -1,0 +1,2 @@
+class GeneralAccount < ApplicationRecord
+end
