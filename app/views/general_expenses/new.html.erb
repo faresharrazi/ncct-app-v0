@@ -1,0 +1,11 @@
+<% content_for :title, "New general expense" %>
+
+<h1>New general expense</h1>
+
+<%= render "form", general_expense: @general_expense %>
+
+<br>
+
+<div>
+  <%= link_to "Back to general expenses", general_expenses_path %>
+</div>
