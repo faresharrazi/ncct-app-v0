@@ -1,117 +1,29 @@
-<p style="color: green"><%= notice %></p>
-
-<%= render @general_account %>
-
-<div>
-  <%= link_to "Edit this general account", edit_general_account_path(@general_account) %> |
-  <%= link_to "Back to general accounts", general_accounts_path %>
-
-  <%= button_to "Destroy this general account", @general_account, method: :delete %>
-</div>
-
--------------
-
 <h1>General Account</h1>
 
 <p><strong>Net Income:</strong> <%= @general_account.net_income %></p>
 
 <hr>
 
+<!-- List of General Incomes -->
 <h2>General Incomes</h2>
-<table>
-  <thead>
-    <tr>
-      <th>Title</th>
-      <th>Amount</th>
-      <th>Recurrent</th>
-      <th>Recurrence Frequency</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @general_incomes.each do |income| %>
-      <tr>
-        <td><%= income.title %></td>
-        <td><%= income.amount %></td>
-        <td><%= income.recurrent ? "Yes" : "No" %></td>
-        <td><%= income.recurrence_frequency if income.recurrent %></td>
-        <td>
-          <%= link_to "Edit", edit_general_income_path(income) %> |
-          <%= link_to "Delete", general_income_path(income), method: :delete, data: { confirm: "Are you sure?" } %>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<h3>Add New General Income</h3>
-<%= form_with(model: @general_income, url: general_incomes_path) do |f| %>
-  <div>
-    <%= f.label :title %>
-    <%= f.text_field :title %>
-  </div>
-  <div>
-    <%= f.label :amount %>
-    <%= f.number_field :amount, step: 0.01 %>
-  </div>
-  <div>
-    <%= f.label :recurrent %>
-    <%= f.check_box :recurrent %>
-  </div>
-  <div>
-    <%= f.label :recurrence_frequency, "Recurrence Frequency (in days)" %>
-    <%= f.number_field :recurrence_frequency, min: 1 %>
-  </div>
-  <%= f.submit "Add Income" %>
+<% if @general_incomes.any? %>
+  <ul>
+    <%= render partial: "general_incomes/general_income", collection: @general_incomes, as: :general_income %>
+  </ul>
+<% else %>
+  <p>No General Incomes added yet.</p>
 <% end %>
+<%= link_to "Add General Income", new_general_income_path, class: "btn btn-primary" %>
 
 <hr>
 
+<!-- List of General Expenses -->
 <h2>General Expenses</h2>
-<table>
-  <thead>
-    <tr>
-      <th>Title</th>
-      <th>Amount</th>
-      <th>Recurrent</th>
-      <th>Recurrence Frequency</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @general_expenses.each do |expense| %>
-      <tr>
-        <td><%= expense.title %></td>
-        <td><%= expense.amount %></td>
-        <td><%= expense.recurrent ? "Yes" : "No" %></td>
-        <td><%= expense.recurrence_frequency if expense.recurrent %></td>
-        <td>
-          <%= link_to "Edit", edit_general_expense_path(expense) %> |
-          <%= link_to "Delete", general_expense_path(expense), method: :delete, data: { confirm: "Are you sure?" } %>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<h3>Add New General Expense</h3>
-<%= form_with(model: @general_expense, url: general_expenses_path) do |f| %>
-  <div>
-    <%= f.label :title %>
-    <%= f.text_field :title %>
-  </div>
-  <div>
-    <%= f.label :amount %>
-    <%= f.number_field :amount, step: 0.01 %>
-  </div>
-  <div>
-    <%= f.label :recurrent %>
-    <%= f.check_box :recurrent %>
-  </div>
-  <div>
-    <%= f.label :recurrence_frequency, "Recurrence Frequency (in days)" %>
-    <%= f.number_field :recurrence_frequency, min: 1 %>
-  </div>
-  <%= f.submit "Add Expense" %>
+<% if @general_expenses.any? %>
+  <ul>
+    <%= render partial: "general_expenses/general_expense", collection: @general_expenses, as: :general_expense %>
+  </ul>
+<% else %>
+  <p>No General Expenses added yet.</p>
 <% end %>
-
+<%= link_to "Add General Expense", new_general_expense_path, class: "btn btn-primary" %>

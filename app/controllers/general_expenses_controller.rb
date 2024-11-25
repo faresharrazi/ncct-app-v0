@@ -22,6 +22,7 @@ class GeneralExpensesController < ApplicationController
   # POST /general_expenses or /general_expenses.json
   def create
     @general_expense = GeneralExpense.new(general_expense_params)
+    @general_expense.general_account_id = 1
 
     respond_to do |format|
       if @general_expense.save
