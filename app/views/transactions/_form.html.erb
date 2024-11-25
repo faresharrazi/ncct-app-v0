@@ -22,21 +22,50 @@
   </div>
 
   <div>
-    <%= form.label :date, style: "display: block" %>
-    <%= form.datetime_field :date %>
+    <%= form.hidden_field :date, value: Time.current %>
   </div>
 
   <div>
-    <%= form.label :account_id, style: "display: block" %>
-    <%= form.text_field :account_id %>
+    <%= form.label :account_id %>
+    <%= form.collection_select :account_id, Account.all, :id, :title, prompt: "Select an account" %>
   </div>
 
   <div>
-    <%= form.label :category_id, style: "display: block" %>
-    <%= form.text_field :category_id %>
+    <%= form.label :category_id %>
+    <%= form.select :category_id, [], prompt: "Select an account first", id: "category-dropdown" %>
   </div>
 
   <div>
     <%= form.submit %>
   </div>
 <% end %>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const accountDropdown = document.querySelector("#transaction_account_id");
+    const categoryDropdown = document.querySelector("#category-dropdown");
+
+    accountDropdown.addEventListener("change", async (event) => {
+      const accountId = event.target.value;
+
+      if (accountId) {
+        const response = await fetch(`/accounts/${accountId}/categories`);
+        const categories = await response.json();
+
+        // Clear the category dropdown
+        categoryDropdown.innerHTML = '<option value="">Select a category</option>';
+
+        // Populate the dropdown with categories
+        categories.forEach(category => {
+          const option = document.createElement("option");
+          option.value = category.id;
+          option.textContent = category.name;
+          categoryDropdown.appendChild(option);
+        });
+      } else {
+        // Clear the category dropdown if no account is selected
+        categoryDropdown.innerHTML = '<option value="">Select an account first</option>';
+      }
+    });
+  });
+</script>

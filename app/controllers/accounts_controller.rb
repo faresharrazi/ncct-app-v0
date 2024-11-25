@@ -8,6 +8,8 @@ class AccountsController < ApplicationController
 
   # GET /accounts/1 or /accounts/1.json
   def show
+    @categories = @account.categories
+    @new_category = Category.new
   end
 
   # GET /accounts/new
@@ -22,6 +24,7 @@ class AccountsController < ApplicationController
   # POST /accounts or /accounts.json
   def create
     @account = Account.new(account_params)
+    @account.general_account_id = 1 # Default General Account ID
 
     respond_to do |format|
       if @account.save
@@ -57,6 +60,11 @@ class AccountsController < ApplicationController
     end
   end
 
+  def categories
+    @account = Account.find(params[:id])
+    render json: @account.categories.select(:id, :name)
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_account
@@ -65,6 +73,6 @@ class AccountsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def account_params
-      params.expect(account: [ :title, :balance, :percentage, :general_account_id ])
+      params.expect(account: [ :title, :percentage, :general_account_id ])
     end
 end

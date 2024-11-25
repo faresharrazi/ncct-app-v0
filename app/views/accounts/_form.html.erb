@@ -17,8 +17,7 @@
   </div>
 
   <div>
-    <%= form.label :balance, style: "display: block" %>
-    <%= form.text_field :balance %>
+    <%= form.hidden_field :balance, value: 0 %>
   </div>
 
   <div>
@@ -27,8 +26,7 @@
   </div>
 
   <div>
-    <%= form.label :general_account_id, style: "display: block" %>
-    <%= form.text_field :general_account_id %>
+    <%= form.hidden_field :general_account_id, value: 1 %>
   </div>
 
   <div>
