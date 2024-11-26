@@ -15,9 +15,7 @@ class GeneralAccount < ApplicationRecord
   end
 
     def distribute_net_income
-    accounts.each do |account|
-      account.update(balance: (net_income * account.percentage / 100.0).round(2))
-    end
+   Rails.logger.debug("Distribution logic removed for better balance tracking.")
   end
   
 end
