@@ -6,32 +6,34 @@ class Account < ApplicationRecord
   validates :percentage, numericality: { greater_than: 0, less_than_or_equal_to: 100 }
   validate :validate_total_percentage
 
-  after_commit :update_balance, on: [:create, :update]
+  def update_balance
+    Rails.logger.info("Updating balance for Account ##{id}")
 
-  def transfer_to(other_account, amount)
-    raise "Insufficient balance" if self.balance < amount
+    # Percentage-based share of the net income
+    percentage_of_net_income = (general_account.net_income * (percentage / 100.0)).round(2)
 
-    self.transactions.create!(name: "Transfer to #{other_account.title}", amount: -amount, category: nil)
-    self.update!(balance: self.balance - amount)
+    # Total amount of transactions for this account
+    total_transactions = transactions.sum(:amount)
 
-    other_account.transactions.create!(name: "Transfer from #{self.title}", amount: amount, category: nil)
-    other_account.update!(balance: other_account.balance + amount)
+    # New balance = percentage share - transactions
+    new_balance = percentage_of_net_income - total_transactions
+    update!(balance: new_balance)
+
+    Rails.logger.info("New balance for Account ##{id}: #{new_balance}")
   end
 
   private
 
   def validate_total_percentage
     total_percentage = general_account.accounts.sum(:percentage)
+    previous_percentage = percentage_before_last_save || 0
+
     if new_record?
       if total_percentage + percentage > 100
         errors.add(:percentage, "Total percentage of all accounts cannot exceed 100%")
       end
-    elsif total_percentage - self.percentage_before_last_save + percentage > 100
+    elsif total_percentage - previous_percentage + percentage > 100
       errors.add(:percentage, "Total percentage of all accounts cannot exceed 100%")
     end
-  end
-
-  def update_balance
-    update_column(:balance, (general_account.net_income * (percentage / 100.0)).round(2))
   end
 end

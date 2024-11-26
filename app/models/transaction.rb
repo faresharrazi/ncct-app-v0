@@ -5,7 +5,7 @@ class Transaction < ApplicationRecord
   validates :name, :amount, :account_id, :category_id, presence: true
   validate :sufficient_account_balance
 
-  after_create :deduct_from_account
+  after_create :update_account_and_general_account
 
   # Scopes
   scope :by_account, ->(account_id) { where(account_id: account_id) if account_id.present? }
@@ -22,11 +22,13 @@ class Transaction < ApplicationRecord
 
   private
 
-  def deduct_from_account
-    # Deduct the transaction amount from the associated account
-    account.update!(balance: account.balance - amount)
+  def update_account_and_general_account
+    Rails.logger.info("Updating Account ##{account.id} and GeneralAccount ##{account.general_account.id} after transaction")
 
-    # Recalculate the net income of the general account
+    # Deduct the transaction amount from the account balance
+    account.update(balance: account.balance - amount)
+
+    # Recalculate net income for the GeneralAccount
     account.general_account.calculate_net_income
   end
 

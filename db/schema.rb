@@ -10,10 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_11_25_194630) do
+ActiveRecord::Schema[8.0].define(version: 2024_11_26_085020) do
   create_table "accounts", force: :cascade do |t|
     t.string "title"
-    t.float "balance"
+    t.float "balance", default: 0.0
     t.integer "percentage"
     t.integer "general_account_id", null: false
     t.datetime "created_at", null: false

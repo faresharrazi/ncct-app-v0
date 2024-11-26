@@ -9,6 +9,7 @@ class GeneralExpense < ApplicationRecord
 
   def allocate_to_accounts
     general_account.accounts.each do |account|
+      account_balance = account.balance || 0
       reduction = amount * (account.percentage / 100.0)
       account.update!(balance: account.balance - reduction)
     end
