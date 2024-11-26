@@ -36,7 +36,7 @@ class Transaction < ApplicationRecord
   def adjust_account_balance
     if saved_change_to_amount?
       difference = amount - amount_before_last_save
-      account.update_balance(-difference)
+      account.update!(balance: account.balance - difference)
       account.general_account.calculate_net_income
     end
   end
