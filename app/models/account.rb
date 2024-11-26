@@ -6,6 +6,8 @@ class Account < ApplicationRecord
   validates :percentage, numericality: { greater_than: 0, less_than_or_equal_to: 100 }
   validate :validate_total_percentage
 
+  before_create :initialize_balance_and_category
+
   def update_balance
     Rails.logger.info("Updating balance for Account ##{id}")
 
@@ -24,16 +26,23 @@ class Account < ApplicationRecord
 
   private
 
-  def validate_total_percentage
-    total_percentage = general_account.accounts.sum(:percentage)
-    previous_percentage = percentage_before_last_save || 0
+  def initialize_balance_and_category
+    # Calculate initial balance based on percentage of general account's net income
+    initial_balance = (general_account.net_income || 0) * (percentage / 100.0)
+    self.balance = initial_balance.round(2)
 
-    if new_record?
-      if total_percentage + percentage > 100
+    # Create a default category for the account
+    categories.build(name: title)
+  end
+
+  def validate_total_percentage
+    general_account.with_lock do
+      total_percentage = general_account.accounts.sum(:percentage)
+      previous_percentage = percentage_before_last_save || 0
+
+      if total_percentage - previous_percentage + percentage > 100
         errors.add(:percentage, "Total percentage of all accounts cannot exceed 100%")
       end
-    elsif total_percentage - previous_percentage + percentage > 100
-      errors.add(:percentage, "Total percentage of all accounts cannot exceed 100%")
     end
   end
 end

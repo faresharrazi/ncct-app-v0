@@ -25,19 +25,25 @@ class TransactionsController < ApplicationController
   end
 
   # POST /transactions or /transactions.json
-  def create
-    @transaction = Transaction.new(transaction_params)
+def create
+  @transaction = Transaction.new(transaction_params)
 
-    respond_to do |format|
-      if @transaction.save
-        format.html { redirect_to @transaction, notice: "Transaction was successfully created." }
-        format.json { render :show, status: :created, location: @transaction }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @transaction.errors, status: :unprocessable_entity }
-      end
+  # Use the default category if none is selected
+  if @transaction.category_id.blank?
+    default_category = @transaction.account.categories.find_by(name: @transaction.account.title)
+    @transaction.category_id = default_category.id if default_category
+  end
+
+  respond_to do |format|
+    if @transaction.save
+      format.html { redirect_to @transaction, notice: "Transaction was successfully created." }
+      format.json { render :show, status: :created, location: @transaction }
+    else
+      format.html { render :new, status: :unprocessable_entity }
+      format.json { render json: @transaction.errors, status: :unprocessable_entity }
     end
   end
+end
 
   # PATCH/PUT /transactions/1 or /transactions/1.json
   def update
