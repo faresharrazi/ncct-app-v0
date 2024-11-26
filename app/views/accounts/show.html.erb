@@ -1,17 +1,29 @@
+<!-- Form to Add New Category -->
+<%= form_with(model: @new_category, url: categories_path, local: true) do |f| %>
+  <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
+    <%= f.text_field :name, placeholder: "Category name", 
+                     style: "flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 5px;" %>
+    <%= f.hidden_field :account_id, value: @account.id %>
+    <%= f.submit "Add Category", 
+                 style: "padding: 10px 20px; border: 1px solid #007bff; border-radius: 5px; background-color: #007bff; color: white; font-weight: bold; white-space: nowrap;" %>
+  </div>
+<% end %>
 <header style="background-color: #f8f9fa; padding: 10px;">
   <nav style="display: flex; justify-content: center; align-items: center; gap: 15px; flex-wrap: wrap;">
     <% @categories.each do |category| %>
       <%= link_to category.name, category_path(category), 
                   style: "text-decoration: none; padding: 10px 20px; border: 1px solid #ccc; border-radius: 5px; background-color: #f8f9fa; display: inline-block;" %>
     <% end %>
-  </nav>
-</header>
+    <!-- Edit Link on the Right -->
 
-<!-- Edit Link on the Right -->
-<div style="text-align: right; margin-top: 10px;">
+  </nav>
+  <div style="text-align: right; margin-top: 10px;">
   <%= link_to "(Edit)", edit_account_path(@account), 
               style: "font-size: 14px; text-decoration: none; margin-left: 10px;" %>
 </div>
+</header>
+
+
 
 <!-- List of Transactions -->
 <% if @transactions.any? %>

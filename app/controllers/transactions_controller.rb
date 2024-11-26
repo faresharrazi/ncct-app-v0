@@ -1,16 +1,17 @@
 class TransactionsController < ApplicationController
   before_action :set_transaction, only: %i[ show edit update destroy ]
 
-  # GET /transactions or /transactions.json
   def index
-    @general_account = GeneralAccount.find(1)
+    @general_account = GeneralAccount.find_by(id: 1)
+    @account = Account.find_by(id: params[:account_id]) # Optional account
     @transactions = Transaction.all
-    @account = Account.find_by(id: params[:account_id]) # Only set if account_id is provided
-    @transactions = @transactions.by_account(params[:account_id])
-    @transactions = @transactions.by_category(params[:category_id])
-    @transactions = @transactions.by_date_range(params[:start_date], params[:end_date])
-    @transactions = @transactions.by_amount_range(params[:min_amount], params[:max_amount])
-    @transactions = @transactions.search_by_name(params[:query])
+
+    # Apply scopes conditionally
+    @transactions = @transactions.by_account(params[:account_id]) if params[:account_id].present?
+    @transactions = @transactions.by_category(params[:category_id]) if params[:category_id].present?
+    @transactions = @transactions.by_date_range(params[:start_date], params[:end_date]) if params[:start_date].present? && params[:end_date].present?
+    @transactions = @transactions.by_amount_range(params[:min_amount], params[:max_amount]) if params[:min_amount].present? && params[:max_amount].present?
+    @transactions = @transactions.search_by_name(params[:query]) if params[:query].present?
   end
 
   # GET /transactions/1 or /transactions/1.json

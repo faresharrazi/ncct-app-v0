@@ -2,9 +2,11 @@
   <nav style="display: flex; justify-content: center; align-items: center;">
     <div style="text-align: center;">
   <!-- Transactions Button -->
-      <%= link_to "All transactions", transactions_path, 
-            style: "display: inline-block; text-decoration: none; font-weight: bold; padding: 10px 20px; border: 1px solid #ccc; border-radius: 5px; background-color: #f8f9fa; font-size: 16px;" %>
-      <%= link_to "+ Create Transaction", new_transaction_path, 
+     <% if Transaction.exists? %>
+        <%= link_to "All Transactions", transactions_path, 
+                    style: "text-decoration: none; margin-right: 15px; font-weight: bold; padding: 10px 20px; border: 1px solid #ccc; border-radius: 5px; background-color: #f8f9fa;" %>
+      <% end %>
+    <%= link_to "+ Create Transaction", new_transaction_path, 
             style: "display: inline-block; text-decoration: none; font-weight: bold; padding: 10px 20px; border: 1px solid #ccc; border-radius: 5px; background-color: #f8f9fa; font-size: 16px;" %>
 
 <header style="background-color: #f8f9fa; padding: 10px;">
