@@ -6,22 +6,21 @@
 
   <p>
     <strong>Amount:</strong>
-    <%= transaction.amount %>
+    <%= transaction.amount %>€
   </p>
 
   <p>
     <strong>Date:</strong>
-    <%= transaction.date %>
+    <%= transaction.date.strftime('%b %d, %Y %I:%M %p') %>
   </p>
 
   <p>
     <strong>Account:</strong>
-    <%= transaction.account_id %>
+    <%= transaction.account&.title || "Account not found" %>
   </p>
 
   <p>
     <strong>Category:</strong>
-    <%= transaction.category_id %>
+    <%= transaction.category&.name || "Category not found" %>
   </p>
-
 </div>
