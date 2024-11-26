@@ -1,26 +1,11 @@
-<div id="<%= dom_id transaction %>">
-  <p>
-    <strong>Name:</strong>
-    <%= transaction.name %>
-  </p>
-
-  <p>
-    <strong>Amount:</strong>
-    <%= transaction.amount %>€
-  </p>
-
-  <p>
-    <strong>Date:</strong>
-    <%= transaction.date.strftime('%b %d, %Y %I:%M %p') %>
-  </p>
-
-  <p>
-    <strong>Account:</strong>
-    <%= transaction.account&.title || "Account not found" %>
-  </p>
-
-  <p>
-    <strong>Category:</strong>
-    <%= transaction.category&.name || "Category not found" %>
-  </p>
-</div>
+<tr id="<%= dom_id(transaction) %>">
+        <td style="border: 1px solid #ccc; padding: 10px;"><%= link_to transaction.name, transaction %></td>
+        <td style="border: 1px solid #ccc; padding: 10px;"><%= transaction.amount %>€</td>
+        <td style="border: 1px solid #ccc; padding: 10px;"><%= transaction.date.strftime('%b %d, %Y %I:%M %p') %></td>
+        <td style="border: 1px solid #ccc; padding: 10px;">
+          <%= transaction.account&.title || "Account not found" %>
+        </td>
+        <td style="border: 1px solid #ccc; padding: 10px;">
+          <%= transaction.category&.name || "Category not found" %>
+        </td>
+      </tr>

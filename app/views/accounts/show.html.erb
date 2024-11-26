@@ -1,26 +1,67 @@
-<h1>Account: <%= @account.title %></h1>
-<p><strong>Balance:</strong> <%= @account.balance %>€</p>
-<p><strong>Percentage:</strong> <%= @account.percentage %>%</p>
+<div style="text-align: center; margin-bottom: 20px;">
 
-<hr>
+<header style="background-color: #f8f9fa; padding: 10px;">
+  <nav style="display: flex; justify-content: center; align-items: center; gap: 15px; flex-wrap: wrap;">
+    <% @accounts.each do |account| %>
+      <%= link_to account_path(account), 
+                  style: "text-decoration: none; #{current_page?(account_path(account)) ? 'font-weight: bold; text-decoration: underline;' : ''}; padding: 10px 20px; border: 1px solid #ccc; border-radius: 5px; background-color: #f8f9fa; display: inline-block;" do %>
+        <div style="text-align: center;">
+          <strong><%= account.title %></strong><br>
+          (<%= account.balance %>€) - <%= account.percentage %>%
+        </div>
+      <% end %>
+    <% end %>
+    <%= link_to "+", new_account_path, 
+                style: "text-decoration: none; #{current_page?(new_account_path) ? 'font-weight: bold; text-decoration: underline;' : ''}; padding: 10px 20px; border: 1px solid #ccc; border-radius: 5px; background-color: #f8f9fa; display: inline-block;" %>
+  </nav>
+</header>
+</div>
 
-<h2>Categories</h2>
-<% if @categories.any? %>
-  <ul>
-    <%= render partial: "categories/category", collection: @categories, as: :category %>
-  </ul>
+
+  <!-- Edit Link on the Right -->
+  <div style="text-align: right;">
+    <%= link_to "(Edit)", edit_account_path(@account), 
+                style: "font-size: 14px; text-decoration: none; margin-left: 10px;" %>
+  </div>
+</div>
+
+<!-- List of Transactions -->
+<% if @transactions.any? %>
+  <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+    <thead style="background-color: #f8f9fa;">
+      <tr>
+        <th style="border: 1px solid #ccc; padding: 10px;">Name</th>
+        <th style="border: 1px solid #ccc; padding: 10px;">Amount (€)</th>
+        <th style="border: 1px solid #ccc; padding: 10px;">Date</th>
+        <th style="border: 1px solid #ccc; padding: 10px;">Category</th>
+        <th style="border: 1px solid #ccc; padding: 10px; text-align: center;">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @transactions.each do |transaction| %>
+        <tr>
+          <td style="border: 1px solid #ccc; padding: 10px;">
+            <%= link_to transaction.name, transaction_path(transaction), 
+                        style: "text-decoration: none; color: #007bff;" %>
+          </td>
+          <td style="border: 1px solid #ccc; padding: 10px;"><%= transaction.amount %>€</td>
+          <td style="border: 1px solid #ccc; padding: 10px;"><%= transaction.date.strftime('%b %d, %Y %I:%M %p') %></td>
+          <td style="border: 1px solid #ccc; padding: 10px;"><%= transaction.category&.name || "Uncategorized" %></td>
+          <td style="border: 1px solid #ccc; padding: 10px; text-align: center;">
+            <!-- Edit link -->
+            <%= link_to "Edit", edit_transaction_path(transaction), 
+                        style: "text-decoration: none; padding: 5px 10px; border: 1px solid #007bff; border-radius: 5px; background-color: #007bff; color: white; margin-right: 8px;" %>
+            <!-- Delete button -->
+            <%= button_to "X", transaction, method: :delete, 
+                          data: { turbo_confirm: "Are you sure?" }, 
+                          style: "text-decoration: none; padding: 5px 10px; border: 1px solid #dc3545; border-radius: 5px; background-color: #dc3545; color: white;" %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 <% else %>
-  <p>No categories have been added yet.</p>
-<% end %>
-
-<h3>Add a New Category</h3>
-<%= form_with(model: @new_category, url: categories_path, local: true) do |f| %>
-  <div>
-    <%= f.label :name %>
-    <%= f.text_field :name %>
-  </div>
-  <%= f.hidden_field :account_id, value: @account.id %>
-  <div>
-    <%= f.submit "Create Category", class: "btn btn-primary" %>
-  </div>
+  <p style="text-align: center; font-size: 1.2em; color: #555;">
+    No transactions available. Please create one to get started.
+  </p>
 <% end %>

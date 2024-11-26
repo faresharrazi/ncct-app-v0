@@ -4,7 +4,6 @@ class GeneralAccount < ApplicationRecord
   has_many :accounts
 
   def calculate_net_income
-    Rails.logger.info("Calculating net income for GeneralAccount ##{id}, triggered by #{caller[0..2]}")
 
     total_incomes = general_incomes.sum(:amount)
     total_expenses = general_expenses.sum(:amount)
@@ -12,6 +11,13 @@ class GeneralAccount < ApplicationRecord
 
     self.net_income = total_incomes - total_expenses - total_transactions
     save!
-    Rails.logger.info("Net income updated to: #{net_income}")
+    distribute_net_income
   end
+
+    def distribute_net_income
+    accounts.each do |account|
+      account.update(balance: (net_income * account.percentage / 100.0).round(2))
+    end
+  end
+  
 end

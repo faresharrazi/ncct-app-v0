@@ -1,29 +1,40 @@
-<h1>General Account</h1>
+<header style="background-color: #f8f9fa; padding: 10px;">
+  <nav style="display: flex; justify-content: center; align-items: center;">
+    <div style="text-align: center;">
+      <%= link_to "General Incomes", general_incomes_path, style: "margin-right: 15px; text-decoration: none;" %>
+      <%= link_to "General Expenses", general_expenses_path, style: "margin-right: 15px; text-decoration: none;" %>
+    </div>
+  </nav>
+</header>
 
-<p><strong>Net Income:</strong> <%= @general_account.net_income %></p>
 
-<hr>
+<!-- General Incomes Section -->
 
-<!-- List of General Incomes -->
-<h2>General Incomes</h2>
-<% if @general_incomes.any? %>
-  <ul>
-    <%= render partial: "general_incomes/general_income", collection: @general_incomes, as: :general_income %>
-  </ul>
-<% else %>
-  <p>No General Incomes added yet.</p>
-<% end %>
-<%= link_to "Add General Income", new_general_income_path, class: "btn btn-primary" %>
+<% if @general_expenses.present? || @general_incomes.present? %>
+  <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+      <thead style="background-color: #f8f9fa;">
+        <tr>
+          <th style="border: 1px solid #ccc; padding: 10px;">Name</th>
+          <th style="border: 1px solid #ccc; padding: 10px;">Amount (€)</th>
+          <th style="border: 1px solid #ccc; padding: 10px;">Date</th>
+          <th style="border: 1px solid #ccc; padding: 10px;">Type</th>
+          <th style="border: 1px solid #ccc; padding: 10px; text-align: center;">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+  <% end %>
+          <% if @general_incomes.any? %>
+              <%= render partial: "general_incomes/general_income", collection: @general_incomes, as: :general_income %>
+          <% else %>
+            <p>No General Incomes added yet.</p>
+          <% end %>
 
-<hr>
-
-<!-- List of General Expenses -->
-<h2>General Expenses</h2>
-<% if @general_expenses.any? %>
-  <ul>
-    <%= render partial: "general_expenses/general_expense", collection: @general_expenses, as: :general_expense %>
-  </ul>
-<% else %>
-  <p>No General Expenses added yet.</p>
-<% end %>
-<%= link_to "Add General Expense", new_general_expense_path, class: "btn btn-primary" %>
+          <% if @general_expenses.any? %>
+              <%= render partial: "general_expenses/general_expense", collection: @general_expenses, as: :general_expense %>
+          <% else %>
+            <p>No General Expenses added yet.</p>
+          <% end %>
+<% if @general_expenses.present? || @general_incomes.present? %>
+      </tbody>
+    </table>
+  <% end %>

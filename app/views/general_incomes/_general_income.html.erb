@@ -1,12 +1,25 @@
-<div id="<%= dom_id general_income %>">
-  <p>
-    <strong>Title:</strong>
-    <%= general_income.title %>
-  </p>
-
-  <p>
-    <strong>Amount:</strong>
+<tr id="<%= dom_id(general_income) %>">
+  <td style="border: 1px solid #ccc; padding: 10px;">
+    <%= link_to general_income.title, general_income_path(general_income), 
+                style: "text-decoration: none; color: #007bff;" %>
+  </td>
+  <td style="border: 1px solid #ccc; padding: 10px;">
     <%= general_income.amount %>€
-  </p>
+  </td>
+  <td style="border: 1px solid #ccc; padding: 10px;">
+    <%= general_income.created_at.strftime('%b %d, %Y %I:%M %p') %>
+  </td>
+  <td style="border: 1px solid #ccc; padding: 10px; text-align: center;">
+    <span style="color: green;">Income</span>
+  </td>
+  <td style="border: 1px solid #ccc; padding: 10px; text-align: center;">
+    <!-- Edit Link -->
+    <%= link_to "Edit", edit_general_income_path(general_income), 
+                style: "text-decoration: none; padding: 5px 10px; border: 1px solid #007bff; border-radius: 5px; background-color: #007bff; color: white; margin-right: 8px;" %>
 
-</div>
+    <!-- Delete Button -->
+    <%= button_to "X", general_income, method: :delete, 
+                  data: { turbo_confirm: "Are you sure?" }, 
+                  style: "text-decoration: none; padding: 5px 10px; border: 1px solid #dc3545; border-radius: 5px; background-color: #dc3545; color: white;" %>
+  </td>
+</tr>

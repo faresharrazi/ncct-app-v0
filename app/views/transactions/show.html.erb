@@ -1,10 +1,37 @@
 <p style="color: green"><%= notice %></p>
+<%= link_to "Back", transactions_path %>
+<table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+  <thead style="background-color: #f8f9fa;">
+    <tr>
+      <th style="border: 1px solid #ccc; padding: 10px;">Name</th>
+      <th style="border: 1px solid #ccc; padding: 10px;">Amount (€)</th>
+      <th style="border: 1px solid #ccc; padding: 10px;">Date</th>
+      <th style="border: 1px solid #ccc; padding: 10px;">Account</th>
+      <th style="border: 1px solid #ccc; padding: 10px;">Category</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id="<%= dom_id(@transaction) %>">
+        <td style="border: 1px solid #ccc; padding: 10px;"><%= @transaction.name %></td>
+        <td style="border: 1px solid #ccc; padding: 10px;"><%= @transaction.amount %>€</td>
+        <td style="border: 1px solid #ccc; padding: 10px;"><%= @transaction.date.strftime('%b %d, %Y %I:%M %p') %></td>
+        <td style="border: 1px solid #ccc; padding: 10px;">
+          <%= @transaction.account&.title || "Account not found" %>
+        </td>
+        <td style="border: 1px solid #ccc; padding: 10px;">
+          <%= @transaction.category&.name || "Category not found" %>
+        </td>
+      </tr>
+  </tbody>
+</table>
+<div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+  <!-- Edit link -->
+  <%= link_to "Edit", edit_transaction_path(@transaction), 
+              style: "text-decoration: none; padding: 10px 15px; border: 1px solid #007bff; border-radius: 5px; background-color: #007bff; color: white;" %>
 
-<%= render @transaction %>
-
-<div>
-  <%= link_to "Edit this transaction", edit_transaction_path(@transaction) %> |
-  <%= link_to "Back to transactions", transactions_path %>
-
-  <%= button_to "Destroy this transaction", @transaction, method: :delete, data: {turbo_confirm: "Are you sure?"} %>
+  <!-- Delete button -->
+  <%= button_to "Delete", @transaction, method: :delete, 
+                data: { turbo_confirm: "Are you sure?" }, 
+                style: "padding: 10px 15px; border: 1px solid #dc3545; border-radius: 5px; background-color: #dc3545; color: white;" %>
 </div>
+

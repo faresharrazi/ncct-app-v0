@@ -1,10 +1,32 @@
 <p style="color: green"><%= notice %></p>
+<%= link_to "Back", general_expenses_path %>
 
-<%= render @general_expense %>
+<table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+  <thead style="background-color: #f8f9fa;">
+    <tr>
+      <th style="border: 1px solid #ccc; padding: 10px;">Name</th>
+      <th style="border: 1px solid #ccc; padding: 10px;">Amount (€)</th>
+      <th style="border: 1px solid #ccc; padding: 10px;">Date</th>
+      <th style="border: 1px solid #ccc; padding: 10px;">Type</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id="<%= dom_id(@general_expense) %>">
+      <td style="border: 1px solid #ccc; padding: 10px;"><%= @general_expense.title %></td>
+      <td style="border: 1px solid #ccc; padding: 10px;"><%= @general_expense.amount %>€</td>
+      <td style="border: 1px solid #ccc; padding: 10px;"><%= @general_expense.created_at.strftime('%b %d, %Y %I:%M %p') %></td>
+      <td style="border: 1px solid #ccc; padding: 10px; text-align: center;">
+        <span style="color: red;">Expense</span>
+      </td>
+    </tr>
+  </tbody>
+</table>
 
-<div>
-  <%= link_to "Edit this general expense", edit_general_expense_path(@general_expense) %> |
-  <%= link_to "Back to general expenses", general_expenses_path %>
-
-  <%= button_to "Destroy this general expense", @general_expense, method: :delete %>
+<div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
+  <%= link_to "Edit", edit_general_expense_path(@general_expense), 
+              style: "text-decoration: none; padding: 10px 15px; border: 1px solid #007bff; border-radius: 5px; background-color: #007bff; color: white;" %>
+  <%= button_to "Delete", @general_expense, method: :delete, 
+                data: { turbo_confirm: "Are you sure you want to delete this expense?" }, 
+                style: "padding: 10px 15px; border: 1px solid #dc3545; border-radius: 5px; background-color: #dc3545; color: white;" %>
 </div>
+

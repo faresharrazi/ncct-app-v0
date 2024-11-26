@@ -3,7 +3,9 @@ class TransactionsController < ApplicationController
 
   # GET /transactions or /transactions.json
   def index
+    @general_account = GeneralAccount.find(1)
     @transactions = Transaction.all
+    @account = Account.find_by(id: params[:account_id]) # Only set if account_id is provided
     @transactions = @transactions.by_account(params[:account_id])
     @transactions = @transactions.by_category(params[:category_id])
     @transactions = @transactions.by_date_range(params[:start_date], params[:end_date])

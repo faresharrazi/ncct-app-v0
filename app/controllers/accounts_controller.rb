@@ -4,12 +4,17 @@ class AccountsController < ApplicationController
   # GET /accounts or /accounts.json
   def index
     @accounts = Account.all
+    @general_account = GeneralAccount.find(1)
+    @transactions = Transaction.all
   end
 
   # GET /accounts/1 or /accounts/1.json
   def show
     @categories = @account.categories
     @new_category = Category.new
+    @account = Account.find(params[:id])
+    @accounts = Account.all
+    @transactions = @account.transactions
   end
 
   # GET /accounts/new
@@ -19,6 +24,8 @@ class AccountsController < ApplicationController
 
   # GET /accounts/1/edit
   def edit
+    @categories = @account.categories # Fetch categories linked to the account
+    @new_category = Category.new      # Initialize a new category for the form
   end
 
   # POST /accounts or /accounts.json
@@ -63,6 +70,15 @@ class AccountsController < ApplicationController
   def categories
     @account = Account.find(params[:id])
     render json: @account.categories.select(:id, :name)
+  end
+
+  def transactions
+  @account = Account.find(params[:id])
+  @transactions = @account.transactions
+end
+
+  def ui_categories
+    @categories = @account.categories
   end
 
   private

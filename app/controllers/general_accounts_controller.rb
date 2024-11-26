@@ -4,13 +4,17 @@ class GeneralAccountsController < ApplicationController
   # GET /general_accounts or /general_accounts.json
   def index
     @general_accounts = GeneralAccount.all
+    @accounts = Account.all
+    @transactions = Transaction.all
   end
 
   # GET /general_accounts/1 or /general_accounts/1.json
   def show
     @general_account = GeneralAccount.first # Assuming only one global account
-    @general_incomes = @general_account.general_incomes
-    @general_expenses = @general_account.general_expenses
+    @general_incomes = GeneralIncome.all || []
+    @general_expenses = GeneralExpense.all || []
+    @accounts = Account.all
+    @transactions = Transaction.all
 
     # For new income and expense forms
     @general_income = GeneralIncome.new

@@ -1,11 +1,21 @@
 <header style="background-color: #f8f9fa; padding: 10px;">
   <nav style="display: flex; justify-content: center; align-items: center;">
     <div style="text-align: center;">
-      <%= link_to "General Account", general_account_path(1), style: "margin-right: 15px; text-decoration: none;" %>
-      <%= link_to "General Incomes", general_incomes_path, style: "margin-right: 15px; text-decoration: none;" %>
-      <%= link_to "General Expenses", general_expenses_path, style: "margin-right: 15px; text-decoration: none;" %>
-      <%= link_to "Accounts", accounts_path, style: "margin-right: 15px; text-decoration: none;" %>
-      <%= link_to "Transactions", transactions_path, style: "text-decoration: none;" %>
+    
+  <%= link_to "+ Create Transaction", new_transaction_path, 
+              style: "display: inline-block; text-decoration: none; font-weight: bold; padding: 10px 20px; border: 1px solid #ccc; border-radius: 5px; background-color: #f8f9fa; font-size: 16px;" %>
+
+      <!-- Net Income Button -->
+      <%= link_to "Net: #{@general_account.net_income}€", general_account_path(1), 
+                  style: "margin-right: 15px; text-decoration: none; font-weight: bold; padding: 10px 20px; border: 1px solid #ccc; border-radius: 5px; background-color: #e9ecef;" %>
+      <!-- Accounts Button -->
+      <% first_account = @accounts.first %>
+      <%= link_to "Accounts", first_account ? account_path(first_account) : accounts_path, 
+                  style: "margin-right: 15px; text-decoration: none; font-weight: bold; padding: 10px 20px; border: 1px solid #ccc; border-radius: 5px; background-color: #e9ecef;" %>
+      <!-- Transactions Button -->
+      <%= link_to "All transactions", transactions_path, 
+                  style: "text-decoration: none; font-weight: bold; padding: 10px 20px; border: 1px solid #ccc; border-radius: 5px; background-color: #e9ecef;" %>
     </div>
   </nav>
 </header>
+
