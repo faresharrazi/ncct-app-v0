@@ -10,7 +10,9 @@
     <%= general_income.created_at.strftime('%b %d, %Y %I:%M %p') %>
   </td>
   <td style="border: 1px solid #ccc; padding: 10px; text-align: center;">
-    <span style="color: green;">Income</span>
+    <%= link_to general_incomes_path, style: "text-decoration: none;" do %>
+      <span style="color: green;">Income</span>
+    <% end %>
   </td>
   <td style="border: 1px solid #ccc; padding: 10px; text-align: center;">
     <!-- Edit Link -->

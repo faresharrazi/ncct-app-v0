@@ -1,36 +1,64 @@
 <header style="background-color: #f8f9fa; padding: 10px;">
   <nav style="display: flex; justify-content: center; align-items: center;">
     <div style="text-align: center;">
-      <%= link_to "General Incomes", general_incomes_path, style: "margin-right: 15px; text-decoration: none;" %>
-      <%= link_to "General Expenses", general_expenses_path, style: "margin-right: 15px; text-decoration: none;" %>
+      <%= link_to "New general income", new_general_income_path %>
     </div>
+    <%= link_to general_expenses_path, style: "text-decoration: none;" do %>
+     <span style="color: red;">Expense</span>
+    <% end %>
   </nav>
 </header>
 
-<div style="padding: 20px;">
-  <p style="color: green"><%= notice %></p>
-</div>
-
-  <%= link_to "New general income", new_general_income_path %>
+<% if notice.present? %>
+  <div style="padding: 20px;">
+    <p style="color: green"><%= notice %></p>
+  </div>
+<% end %>
 
   <% content_for :title, "General incomes" %>
   <div id="general_incomes">
-    
       <div id="general_expenses">
       <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
-      <thead style="background-color: #f8f9fa;">
-      
-        <tr>
-          <th style="border: 1px solid #ccc; padding: 10px;">Name</th>
-          <th style="border: 1px solid #ccc; padding: 10px;">Amount (€)</th>
-          <th style="border: 1px solid #ccc; padding: 10px;">Date</th>
-          <th style="border: 1px solid #ccc; padding: 10px;">Type</th>
-          <th style="border: 1px solid #ccc; padding: 10px; text-align: center;">Actions</th>
-        </tr>
-      </thead>
+        <thead style="background-color: #f8f9fa;">
+        
+          <tr>
+            <th style="border: 1px solid #ccc; padding: 10px;">Name</th>
+            <th style="border: 1px solid #ccc; padding: 10px;">Amount (€)</th>
+            <th style="border: 1px solid #ccc; padding: 10px;">Date</th>
+            <th style="border: 1px solid #ccc; padding: 10px;">Type</th>
+            <th style="border: 1px solid #ccc; padding: 10px; text-align: center;">Actions</th>
+          </tr>
+        </thead>
       <tbody>
       <% @general_incomes.each do |general_income| %>
-      <%= render general_income %>
+      <tr id="<%= dom_id(general_income) %>">
+        <td style="border: 1px solid #ccc; padding: 10px;">
+          <%= link_to general_income.title, general_income_path(general_income), 
+                      style: "text-decoration: none; color: #007bff;" %>
+        </td>
+        <td style="border: 1px solid #ccc; padding: 10px;">
+          <%= general_income.amount %>€
+        </td>
+        <td style="border: 1px solid #ccc; padding: 10px;">
+          <%= general_income.created_at.strftime('%b %d, %Y %I:%M %p') %>
+        </td>
+        <td style="border: 1px solid #ccc; padding: 10px; text-align: center;">
+         
+            <span style="color: green;">Income</span>
+          
+        </td>
+        <td style="border: 1px solid #ccc; padding: 10px; text-align: center;">
+          <!-- Edit Link -->
+          <%= link_to "Edit", edit_general_income_path(general_income), 
+                      style: "text-decoration: none; padding: 5px 10px; border: 1px solid #007bff; border-radius: 5px; background-color: #007bff; color: white; margin-right: 8px;" %>
+
+          <!-- Delete Button -->
+          <%= button_to "X", general_income, method: :delete, 
+                        data: { turbo_confirm: "Are you sure?" }, 
+                        style: "text-decoration: none; padding: 5px 10px; border: 1px solid #dc3545; border-radius: 5px; background-color: #dc3545; color: white;" %>
+        </td>
+      </tr>
+
     <% end %>
     </tbody>
   </table>

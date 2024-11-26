@@ -1,11 +1,17 @@
-<% content_for :title, "New general income" %>
+<header style="background-color: #f8f9fa; padding: 10px;">
+  <nav style="display: flex; justify-content: center; align-items: center;">
 
-<h1>New general income</h1>
+    <%= link_to general_incomes_path, style: "text-decoration: none;" do %>
+        <span style="color: green;">Income</span>
+    <% end %>
+    
+    <%= link_to general_expenses_path, style: "text-decoration: none;" do %>
+        <span style="color: red;">Expense</span>
+    <% end %>
+  </nav>
+</header>
+<h4>New general income</h4>
 
 <%= render "form", general_income: @general_income %>
 
 <br>
-
-<div>
-  <%= link_to "Back to general incomes", general_incomes_path %>
-</div>

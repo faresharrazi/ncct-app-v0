@@ -26,7 +26,7 @@ class GeneralIncomesController < ApplicationController
 
     respond_to do |format|
       if @general_income.save
-        format.html { redirect_to @general_income, notice: "General income was successfully created." }
+        format.html { redirect_to general_incomes_path, notice: "General income was successfully created." }
         format.json { render :show, status: :created, location: @general_income }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -39,7 +39,7 @@ class GeneralIncomesController < ApplicationController
   def update
     respond_to do |format|
       if @general_income.update(general_income_params)
-        format.html { redirect_to @general_income, notice: "General income was successfully updated." }
+        format.html { redirect_to general_incomes_path, notice: "General income was successfully updated." }
         format.json { render :show, status: :ok, location: @general_income }
       else
         format.html { render :edit, status: :unprocessable_entity }

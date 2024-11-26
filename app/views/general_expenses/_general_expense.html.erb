@@ -10,7 +10,9 @@
     <%= general_expense.created_at.strftime('%b %d, %Y %I:%M %p') %>
   </td>
   <td style="border: 1px solid #ccc; padding: 10px; text-align: center;">
-    <span style="color: red;">Expense</span>
+      <%= link_to general_expenses_path, style: "text-decoration: none;" do %>
+          <span style="color: red;">Expense</span>
+        <% end %>
   </td>
   <td style="border: 1px solid #ccc; padding: 10px; text-align: center;">
     <!-- Edit Link -->

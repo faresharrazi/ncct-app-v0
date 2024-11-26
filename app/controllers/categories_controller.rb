@@ -26,7 +26,7 @@ def create
   respond_to do |format|
     if @category.save
       if @category.account_id.present?
-        format.html { redirect_to account_path(@category.account_id), notice: "Category was successfully created." }
+        format.html { redirect_to edit_account_path(@category.account_id), notice: "Category was successfully created." }
       else
         format.html { redirect_to @category, notice: "Category was successfully created." }
       end

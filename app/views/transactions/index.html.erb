@@ -1,22 +1,4 @@
-<!-- Sub-navbar for Transaction Scopes -->
-<header style="background-color: #f8f9fa; padding: 10px; margin-bottom: 20px;">
-  <nav style="display: flex; justify-content: center; align-items: center;">
-    <div style="text-align: center;">
-      <%= link_to "By Account", transactions_path(scope: 'account'), 
-                  style: "text-decoration: none; margin-right: 15px;" %>
-      <%= link_to "By Category", transactions_path(scope: 'category'), 
-                  style: "text-decoration: none; margin-right: 15px;" %>
-      <%= link_to "By Date", transactions_path(scope: 'date'), 
-                  style: "text-decoration: none; margin-right: 15px;" %>
-      <%= link_to "By Amount", transactions_path(scope: 'amount'), 
-                  style: "text-decoration: none;" %>
-    </div>
-  </nav>
-</header>
-
-<!-- Notification Message -->
 <p style="color: green"><%= notice %></p>
-
 <div id="transactions">
   <% if @transactions.any? %>
     <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">

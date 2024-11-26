@@ -1,6 +1,4 @@
 <p style="color: green"><%= notice %></p>
-<%= link_to "Back", general_expenses_path %>
-
 <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
   <thead style="background-color: #f8f9fa;">
     <tr>
@@ -16,7 +14,9 @@
       <td style="border: 1px solid #ccc; padding: 10px;"><%= @general_expense.amount %>€</td>
       <td style="border: 1px solid #ccc; padding: 10px;"><%= @general_expense.created_at.strftime('%b %d, %Y %I:%M %p') %></td>
       <td style="border: 1px solid #ccc; padding: 10px; text-align: center;">
-        <span style="color: red;">Expense</span>
+        <%= link_to general_expenses_path, style: "text-decoration: none;" do %>
+          <span style="color: red;">Expense</span>
+        <% end %>
       </td>
     </tr>
   </tbody>
