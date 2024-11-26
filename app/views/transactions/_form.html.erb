@@ -22,10 +22,10 @@
 
   <div data-controller="transaction">
     <%= form.label :account_id %>
-    <%= form.collection_select :account_id, Account.all, :id, :title, { prompt: "Select an account" }, { data: { transaction_target: "account" }, onchange: "this.controller.updateCategories()" } %>
+    <%= form.collection_select :account_id, Account.all, :id, :title, { prompt: "Select an account" }, { data: { transaction_target: "account", action: "transaction#updateCategories" } } %>
 
     <%= form.label :category_id %>
-    <%= form.select :category_id, [], { prompt: "Select a category" }, { data: { transaction_target: "category" } } %>
+    <%= form.select :category_id, [], { prompt: "Select an account first" }, { data: { transaction_target: "category" } } %>
   </div>
 
   <%= form.hidden_field :date, value: Time.current %>
