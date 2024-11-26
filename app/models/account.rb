@@ -11,13 +11,13 @@ class Account < ApplicationRecord
   def update_balance
     Rails.logger.info("Updating balance for Account ##{id}")
 
-    # Percentage-based share of the net income
+    # Percentage-based share of the general account's net income
     percentage_of_net_income = (general_account.net_income * (percentage / 100.0)).round(2)
 
-    # Total amount of transactions for this account
+    # Total transaction amounts for this account
     total_transactions = transactions.sum(:amount)
 
-    # New balance = percentage share - transactions
+    # Calculate the new balance
     new_balance = percentage_of_net_income - total_transactions
     update!(balance: new_balance)
 
