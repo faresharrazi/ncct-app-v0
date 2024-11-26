@@ -11,7 +11,9 @@ Rails.application.routes.draw do
   root "general_accounts#show", id: 1 # Assuming you have one GeneralAccount with ID 1
 
   resources :accounts do
-    get :categories, on: :member
+  member do
+    get :categories
   end
+end
   
 end
