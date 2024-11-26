@@ -24,21 +24,10 @@
   </head>
 
   <body>
-<!-- Simple Navbar -->
-    <header style="background-color: #f8f9fa; padding: 10px;">
-      <nav style="display: flex; justify-content: space-between; align-items: center;">
-        <div>
-          <%= link_to "NCCT App", root_path, style: "text-decoration: none; font-size: 20px; font-weight: bold; margin-right: 20px;" %>
-        </div>
-        <div>
-          <%= link_to "General Account", general_account_path(1), style: "margin-right: 15px; text-decoration: none;" %>
-          <%= link_to "Accounts", accounts_path, style: "text-decoration: none;" %>
-           <%= link_to "Transactions", transactions_path, style: "text-decoration: none;" %>
-        </div>
-      </nav>
-    </header>
+<%= render 'layouts/navbar' %>
 
-    <div style="margin: 20px;">
-      <%= yield %>
+<div style="margin: 20px;">
+  <%= yield %>
+</div>
   </body>
 </html>

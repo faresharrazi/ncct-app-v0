@@ -1,12 +1,22 @@
 class GeneralIncome < ApplicationRecord
-  after_create :allocate_to_accounts
   belongs_to :general_account
   validates :title, :amount, presence: true
 
+  after_create :allocate_to_accounts
+  after_destroy :update_general_account_net_income
+
+  private
+
   def allocate_to_accounts
-  general_account.accounts.each do |account|
-    account.update(balance: account.balance + (amount * account.percentage / 100))
+    general_account.accounts.each do |account|
+      addition = amount * (account.percentage / 100.0)
+      account.update!(balance: account.balance + addition)
+    end
+    general_account.calculate_net_income
   end
-  general_account.calculate_net_income
+
+  def update_general_account_net_income
+    general_account.calculate_net_income
+  end
 end
-end
+
