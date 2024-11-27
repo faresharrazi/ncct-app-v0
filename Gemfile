@@ -1,4 +1,5 @@
 source "https://rubygems.org"
+gem 'autoprefixer-rails'
 gem "dartsass-rails"
 gem "bootstrap", "~> 5.3.3"
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"

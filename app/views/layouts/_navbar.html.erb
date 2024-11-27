@@ -1,39 +1,15 @@
-<header style="background-color: #f8f9fa; padding: 10px;">
-  <nav style="display: flex; justify-content: center; align-items: center;">
-    <div style="text-align: center;">
-  <!-- Transactions Button -->
-     <% if Transaction.exists? %>
-        <%= link_to "All Transactions", transactions_path, 
-                    style: "text-decoration: none; margin-right: 15px; font-weight: bold; padding: 10px 20px; border: 1px solid #ccc; border-radius: 5px; background-color: #f8f9fa;" %>
-      <% end %>
-    <%= link_to "+ Create Transaction", new_transaction_path, 
-            style: "display: inline-block; text-decoration: none; font-weight: bold; padding: 10px 20px; border: 1px solid #ccc; border-radius: 5px; background-color: #f8f9fa; font-size: 16px;" %>
 
-<header style="background-color: #f8f9fa; padding: 10px;">
-  <nav style="display: flex; justify-content: center; align-items: center; gap: 15px; flex-wrap: wrap;">
+    
     <% @accounts.each do |account| %>
-      <%= link_to account_path(account), 
-                  style: "text-decoration: none; #{current_page?(account_path(account)) ? 'font-weight: bold; text-decoration: underline;' : ''}; padding: 10px 20px; border: 1px solid #ccc; border-radius: 5px; background-color: #f8f9fa; display: inline-block;" do %>
-        <div style="text-align: center;">
+      <%= link_to account_path(account) %>
           <strong><%= account.title %></strong><br>
           (<%= account.balance %>€) - <%= account.percentage %>%
         </div>
       <% end %>
-    <% end %>
-    <%= link_to "+", new_account_path, 
-                style: "text-decoration: none; #{current_page?(new_account_path) ? 'font-weight: bold; text-decoration: underline;' : ''}; padding: 10px 20px; border: 1px solid #ccc; border-radius: 5px; background-color: #f8f9fa; display: inline-block;" %>
-  </nav>
-</header>
-</div>
-      </div>
+    <%= link_to "+", new_account_path %>
 
 
-  </nav>
-        <!-- Net Income Button -->
-<%= link_to "Net: #{@general_account.net_income}€", general_account_path(1), 
-            style: "margin-right: 15px; text-decoration: none; font-weight: bold; padding: 10px 20px; border: 1px solid #ccc; border-radius: 5px; background-color: #e9ecef;" %>
-<div style="text-align: center; margin-bottom: 20px;">
-</header>
+
 
 
 

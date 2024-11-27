@@ -342,6 +342,7 @@ PLATFORMS
   x64-mingw-ucrt
 
 DEPENDENCIES
+  autoprefixer-rails
   bootsnap
   bootstrap (~> 5.3.3)
   brakeman
