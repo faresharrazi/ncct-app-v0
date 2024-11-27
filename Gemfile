@@ -1,5 +1,7 @@
 source "https://rubygems.org"
-gem 'bootstrap'
+gem "cssbundling-rails"
+gem "dartsass-rails"
+gem "bootstrap", "~> 5.3.3"
 gem 'jquery-rails'
 gem "rails", "~> 8.0.0"
 gem "propshaft"

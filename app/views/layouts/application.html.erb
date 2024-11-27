@@ -20,14 +20,15 @@
     <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
-    <link rel="stylesheet" href="https://cdn.simplecss.org/simple.css">
+  
   </head>
 
   <body>
-<%= render 'layouts/navbar' %>
+    <%= render 'layouts/bsnavbar' %>
+    <%= render 'layouts/navbar' %>
 
-<div style="margin: 20px;">
-  <%= yield %>
-</div>
+    
+      <%= yield %>
+    
   </body>
 </html>
