@@ -19,15 +19,21 @@
 
     <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
-    <%= javascript_importmap_tags %>
     <link rel="stylesheet" href="https://cdn.simplecss.org/simple.css">
+    <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
+    
   </head>
 
   <body>
-<%= render 'layouts/navbar' %>
 
-<div style="margin: 20px;">
-  <%= yield %>
-</div>
+    <div class="alert alert-primary" role="alert">
+      This is a primary alert—check it out!
+    </div>
+
+    <%= render 'layouts/navbar' %>
+
+    <div style="margin: 20px;">
+      <%= yield %>
+    </div>
   </body>
 </html>

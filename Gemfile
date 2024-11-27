@@ -1,5 +1,6 @@
 source "https://rubygems.org"
-
+gem "dartsass-rails"
+gem "bootstrap", "~> 5.3.3"
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 8.0.0"
 # The modern asset pipeline for Rails [https://github.com/rails/propshaft]
@@ -61,3 +62,7 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
+
+gem "cssbundling-rails", "~> 1.4"
+
+gem "jsbundling-rails", "~> 1.3"
