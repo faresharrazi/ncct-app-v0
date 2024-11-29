@@ -1,8 +1,9 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
   <div class="container-fluid">
      
-          <%= link_to "Net: #{@general_account.net_income}€", general_account_path(1), class: "nav-link", style: "background-color: #e9ecef; font-weight: bold; border-radius: 5px;" %>
-    </a>
+<%= button_to general_account_path(1), method: :get, class: "btn btn-outline-success", form_class: "d-inline" do %>
+  Net: <%= @general_account.net_income %>€
+<% end %> 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -21,11 +22,11 @@
       </ul>
      
      
-      <ul class="navbar-nav">
+      <ul class="navbar-nav m-1">
         <!-- Link to All Transactions -->
         <% if Transaction.exists? %>
           <li class="nav-item">
-            <%= link_to "Transactions", transactions_path, class: "nav-link", class: "nav-link", style: "background-color: #e9ecef; font-weight: bold; border-radius: 5px;" %>
+<%= link_to "Transactions", transactions_path, class: "btn btn-outline-primary" %>
           </li>
         <% end %>
       </ul>
@@ -33,7 +34,7 @@
         <!-- Link to All Accounts -->
         <% if Transaction.exists? %>
           <li class="nav-item">
-            <%= link_to "Accounts", accounts_path, class: "nav-link", class: "nav-link", style: "background-color: #e9ecef; font-weight: bold; border-radius: 5px;" %>
+<%= link_to "Accounts", accounts_path, class: "btn btn-outline-primary" %>
           </li>
         <% end %>
       </ul>
@@ -56,3 +57,4 @@
     </div>
   <% end %>
 </div>
+<br>

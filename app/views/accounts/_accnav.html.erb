@@ -1,0 +1,10 @@
+<div class="d-flex flex-wrap justify-content-center gap-3 my-4">
+  <% @accounts.each do |account| %>
+    <%= button_to account_path(account), method: :get, class: "btn btn-outline-info text-center", form_class: "d-inline" do %>
+      <div>
+        <strong><%= account.title %></strong><br>
+        (<%= account.balance %>€) - <%= account.percentage %>%
+      </div>
+    <% end %>
+  <% end %>
+</div>
