@@ -1,15 +1,10 @@
-<header style="background-color: #f8f9fa; padding: 10px;">
-  <nav style="display: flex; justify-content: center; align-items: center;">
+<%= button_to general_incomes_path, method: :get, class: "btn btn-outline-success", form_class: "d-inline" do %>
+  Income
+<% end %>
 
-    <%= link_to general_incomes_path, style: "text-decoration: none;" do %>
-        <span style="color: green;">Income</span>
-    <% end %>
-    
-    <%= link_to general_expenses_path, style: "text-decoration: none;" do %>
-        <span style="color: red;">Expense</span>
-    <% end %>
-  </nav>
-</header>
+<%= button_to general_expenses_path, method: :get, class: "btn btn-outline-danger", form_class: "d-inline" do %>
+  Expense
+<% end %>
 <h4>New general income</h4>
 
 <%= render "form", general_income: @general_income %>

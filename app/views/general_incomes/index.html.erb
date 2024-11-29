@@ -1,13 +1,14 @@
-<header style="background-color: #f8f9fa; padding: 10px;">
-  <nav style="display: flex; justify-content: center; align-items: center;">
-    <div style="text-align: center;">
-      <%= link_to "New General Income", new_general_income_path, style: "text-decoration: none;" %>
-    </div>
-    <%= link_to general_expenses_path, style: "text-decoration: none;" do %>
-      <span style="color: red;">Expense</span>
-    <% end %>
-  </nav>
-</header>
+<%= button_to general_incomes_path, method: :get, class: "btn btn-outline-success", form_class: "d-inline" do %>
+  Income
+<% end %>
+
+<%= button_to general_expenses_path, method: :get, class: "btn btn-outline-danger", form_class: "d-inline" do %>
+  Expense
+<% end %>
+
+<%= button_to new_general_income_path, method: :get, class: "btn btn-outline-success", form_class: "d-inline" do %>
+  New General Income
+<% end %>
 
 <% if notice.present? %>
   <div style="padding: 20px;">
