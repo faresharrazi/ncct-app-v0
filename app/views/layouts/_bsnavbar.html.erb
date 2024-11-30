@@ -1,47 +1,55 @@
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
+<nav class="navbar navbar-expand-lg bg-body-tertiary shadow-sm">
   <div class="container-fluid">
- 
+    <!-- Navbar Toggle for Small Screens -->
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
+
+    <!-- Net Income Button -->
+    <div class="d-flex align-items-center">
+      <%= button_to general_account_path(1), method: :get, class: "btn btn-success me-2", form_class: "d-inline" do %>
+        <%= number_to_currency(@general_account.net_income, unit: "€") %>
+      <% end %>
+    </div>
+
+    <!-- Navbar Links -->
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0 m-1">
-        <!-- Link to Create Transaction -->
-        <% if Account.exists? %>
-          <li class="nav-item m-1">
-            <%= button_to "+ Create Transaction", new_transaction_path, method: :get, class: "btn btn-outline-primary", form_class: "d-inline" %>
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <!-- Link to All Transactions -->
+        <% if Transaction.exists? %>
+          <li class="nav-item">
+            <%= link_to "All Transactions", transactions_path, class: "btn btn-outline-primary me-2" %>
           </li>
         <% end %>
 
         <!-- Link to Add New Account -->
         <% if @general_account.net_income > 0 && Account.sum(:percentage) < 100 %>
-          <li class="nav-item m-1">
-             <div><%= button_to "+ New Account", new_account_path, method: :get, class: "btn btn-outline-primary", form_class: "d-inline" %>
-           (Available: <%= 100 - Account.sum(:percentage) %>%)</div>
-            </li>
-        <% end %>
-      </ul>
-      <!-- Net income button -->
-      <%= button_to general_account_path(1), method: :get, class: "btn btn-success", form_class: "d-inline" do %>
-        Net: <%= @general_account.net_income %>€
-      <% end %>
-      <ul class="navbar-nav m-1">
-        <!-- Link to All Transactions -->
-        <% if Transaction.exists? %>
           <li class="nav-item">
-            <%= link_to "Transactions", transactions_path, class: "btn btn-outline-primary" %>  
+            <div class="d-flex align-items-center">
+              <%= button_to "Create Account", new_account_path, method: :get, class: "btn btn-outline-primary me-2", form_class: "d-inline" %>
+              <span class="badge bg-info text-dark">
+                Available: <%= 100 - Account.sum(:percentage) %>%
+              </span>
+            </div>
           </li>
         <% end %>
       </ul>
+
+      <!-- New Transaction Button -->
+      <% if Account.exists? %>
+        <div class="d-flex">
+          <%= button_to "New Transaction", new_transaction_path, method: :get, class: "btn btn-outline-primary" %>
+        </div>
+      <% end %>
     </div>
   </div>
 </nav>
 
- <!-- Accounts with Progress bar -->
-<div class="progress-stacked">
+<!-- Accounts with Progress Bar -->
+<div class="progress-stacked mt-3">
   <% bg_classes = ['bg-success', 'bg-info', 'bg-warning', 'bg-danger'] %>
   <% @accounts.each_with_index do |account, index| %>
-    <div class="progress" role="progressbar" 
+    <div class="progress mb-2" role="progressbar" 
          aria-label="<%= account.title %>" 
          aria-valuenow="<%= account.percentage %>" 
          aria-valuemin="0" 

@@ -2,12 +2,12 @@
   Income
 <% end %>
 
-<%= button_to new_general_income_path, method: :get, class: "btn btn-success btn-sm", form_class: "d-inline" do %>
-  New General Income
-<% end %>
-
 <%= button_to general_expenses_path, method: :get, class: "btn btn-outline-danger btn-sm", form_class: "d-inline" do %>
   Expense
+<% end %>
+
+<%= button_to new_general_income_path, method: :get, class: "btn btn-success btn-sm", form_class: "d-inline" do %>
+  New General Income
 <% end %>
 
 <%= render 'show_incomes_table' %>

@@ -34,11 +34,7 @@ class TransactionsController < ApplicationController
   def create
     @transaction = Transaction.new(transaction_params)
 
-    # Use the default category if none is selected
-    if @transaction.category_id.blank?
-      default_category = @transaction.account.categories.find_by(name: @transaction.account.title)
-      @transaction.category_id = default_category.id if default_category
-    end
+
 
     respond_to do |format|
       if @transaction.save
@@ -90,7 +86,7 @@ class TransactionsController < ApplicationController
     end
 
     # Only allow a list of trusted parameters through.
-    def transaction_params
-      params.expect(transaction: [ :name, :amount, :date, :account_id, :category_id ])
-    end
+  def transaction_params
+    params.require(:transaction).permit(:name, :amount, :date, :account_id, :category_id)
+  end
 end

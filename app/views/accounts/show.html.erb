@@ -1,7 +1,5 @@
 <%= render 'accnav' %>
 
-<%= link_to "(Edit)", edit_account_path(@account), 
-              style: "font-size: 14px; text-decoration: none; margin-left: 10px;" %>
-
+<%= link_to "Edit Account/Categories", edit_account_path(@account), class: "btn btn-primary btn-sm ms-2", role: "button" %>
 
 <%= render 'transactions/all_transactions' %>

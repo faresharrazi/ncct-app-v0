@@ -26,7 +26,9 @@
 
   <body>
     <div class="container">
-      <%= render 'layouts/bsnavbar' %>
+      <div class="sticky-top">
+        <%= render 'layouts/bsnavbar' %>
+      </div>
       <%= render 'layouts/notice' %>
       <%= yield %>
     </div>

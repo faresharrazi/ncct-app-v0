@@ -6,7 +6,7 @@
           <div class="card-body p-3">
             <h6 class="card-title text-info"><%= account.title %></h6>
             <p class="card-text mb-2">
-              <%= account.balance %>€
+              <%= number_with_precision(account.balance, precision: 2) %>€
             </p>
           </div>
         </div>

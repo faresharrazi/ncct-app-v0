@@ -1,13 +1,13 @@
+<%= button_to general_incomes_path, method: :get, class: "btn btn-outline-success btn-sm", form_class: "d-inline" do %>
+  Income
+<% end %>
+
 <%= button_to general_expenses_path, method: :get, class: "btn btn-outline-danger btn-sm", form_class: "d-inline",  disabled: true do %>
   Expense
 <% end %>
 
 <%= button_to new_general_expense_path, method: :get, class: "btn btn-danger btn-sm", form_class: "d-inline" do %>
   New General Expense
-<% end %>
-
-<%= button_to general_incomes_path, method: :get, class: "btn btn-outline-success btn-sm", form_class: "d-inline" do %>
-  Income
 <% end %>
 
 <%= render 'show_expenses_table' %>

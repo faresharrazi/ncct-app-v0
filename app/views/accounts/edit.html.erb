@@ -1,57 +1,71 @@
-<%= render 'accnav' %>
+<%= link_to "Back to Account", account_path(@account), class: "btn btn-light" %>
 
-<%= render "form", account: @account %>
+<div class="row justify-content-center mt-4">
+  <!-- Account Form -->
+  <div class="col-md-3">
+    <%= form_with(model: @account, local: true) do |form| %>
+      <%= form.text_field :title, class: "form-control mb-3", placeholder: "Account Title" %>
+      <!-- Percentage Field with % Symbol -->
+      <div class="input-group mb-3">
+        <%= form.number_field :percentage, 
+                              class: "form-control", 
+                              placeholder: "Percentage", 
+                              min: 0, 
+                              max: 100 - Account.sum(:percentage) + @account.percentage, 
+                              step: 1 %>
+        <span class="input-group-text">%</span>
+      </div>
+      <%= form.submit "Update Account", class: "btn btn-primary mb-2 w-100" %>
+    <% end %>
+    <%= button_to "Delete Account", @account, 
+                  method: :delete, 
+                  data: { turbo_confirm: "Are you sure you want to delete this account?" }, 
+                  class: "btn btn-danger w-100" %>
 
-<div>
-  <%= link_to "Delete account", @account, 
-              method: :delete, 
-              data: { turbo_confirm: "Are you sure you want to delete this account?" }, 
-              style: "display: inline-block; text-decoration: none; font-weight: bold; padding: 10px 20px; border: 1px solid #dc3545; border-radius: 5px; background-color: #dc3545; color: white;" %>
-</div>
-<br>
-<!-- Form to Add New Category -->
-<%= form_with(model: @new_category, url: categories_path, local: true) do |f| %>
-  <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
-    <%= f.text_field :name, placeholder: "Category name", 
-                     style: "flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 5px;" %>
-    <%= f.hidden_field :account_id, value: @account.id %>
-    <%= f.submit "Add Category", 
-                 style: "padding: 10px 20px; border: 1px solid #007bff; border-radius: 5px; background-color: #007bff; color: white; font-weight: bold; white-space: nowrap;" %>
   </div>
-<% end %>
 
+  <!-- Category Form and Table -->
+  <div class="col-md-3">
+    <!-- Form to Add New Category -->
+    <%= form_with(model: @new_category, url: categories_path, local: true) do |f| %>
+      <div class="row g-3 align-items-center mb-3">
+        <div class="col">
+          <%= f.text_field :name, placeholder: "Category name", class: "form-control" %>
+        </div>
+        <div class="col-auto">
+          <%= f.submit "Add Category", class: "btn btn-primary" %>
+        </div>
+        <%= f.hidden_field :account_id, value: @account.id %>
+      </div>
+    <% end %>
 
-<!-- Table for Categories -->
-<% if @categories.any? %>
-  <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
-    <thead style="background-color: #f8f9fa;">
-      <tr>
-        <th style="border: 1px solid #ccc; padding: 10px;">Name</th>
-        <th style="border: 1px solid #ccc; padding: 10px; text-align: center;">Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @categories.each do |category| %>
-        <tr id="<%= dom_id(category) %>">
-          <td style="border: 1px solid #ccc; padding: 10px;"><%= category.name %></td>
-          <td style="border: 1px solid #ccc; padding: 10px; text-align: center;">
-            <!-- Edit Link -->
-            <%= link_to "Edit", edit_category_path(category), 
-                        style: "text-decoration: none; padding: 5px 10px; border: 1px solid #007bff; border-radius: 5px; background-color: #007bff; color: white; margin-right: 5px;" %>
-            <!-- Delete Button -->
-            <%= button_to "X", category, method: :delete, 
-                          data: { turbo_confirm: "Are you sure you want to delete this category?" }, 
-                          style: "text-decoration: none; padding: 5px 10px; border: 1px solid #dc3545; border-radius: 5px; background-color: #dc3545; color: white;" %>
-          </td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-<% else %>
-  <p style="text-align: center; font-size: 1.2em; color: #555;">
-    No categories have been added yet.
-  </p>
-<% end %>
-
-
-
+    <!-- Table for Categories -->
+    <% if @categories.any? %>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col" class="text-center">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @categories.each do |category| %>
+            <tr id="<%= dom_id(category) %>">
+              <td><%= category.name %></td>
+              <td class="text-center">
+                <div class="d-flex justify-content-center">
+                  <%= link_to "Edit", edit_category_path(category), class: "btn btn-sm btn-outline-primary me-2" %>
+                  <%= button_to "Delete", category, method: :delete, 
+                                data: { turbo_confirm: "Are you sure you want to delete this category?" }, 
+                                class: "btn btn-sm btn-outline-danger" %>
+                </div>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% else %>
+      <p class="text-muted fs-5 text-center">No categories have been added yet.</p>
+    <% end %>
+  </div>
+</div>

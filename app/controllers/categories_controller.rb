@@ -17,6 +17,9 @@ class CategoriesController < ApplicationController
 
   # GET /categories/1/edit
   def edit
+    @new_category = Category.new(account_id: @category.account_id)
+    @account = @category.account
+    @categories = @account.categories
   end
 
   # POST /categories or /categories.json
@@ -26,7 +29,7 @@ def create
   respond_to do |format|
     if @category.save
       if @category.account_id.present?
-        format.html { redirect_to account_path(@category.account_id), notice: "Category was successfully created." }
+        format.html { redirect_to edit_account_path(@category.account_id), notice: "Category was successfully created." }
       else
         format.html { redirect_to @category, notice: "Category was successfully created." }
       end
@@ -42,7 +45,7 @@ end
   def update
     respond_to do |format|
       if @category.update(category_params)
-        format.html { redirect_to @category, notice: "Category was successfully updated." }
+        format.html { redirect_to edit_account_path(@category.account_id), notice: "Category was successfully updated." }
         format.json { render :show, status: :ok, location: @category }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -52,20 +55,23 @@ end
   end
 
   # DELETE /categories/1 or /categories/1.json
-  def destroy
-    @category.destroy!
-
-    respond_to do |format|
-      format.html { redirect_to categories_path, status: :see_other, notice: "Category was successfully destroyed." }
-      format.json { head :no_content }
-    end
+def destroy
+  if @category.destroy
+    flash[:notice] = "Category was successfully destroyed."
+  else
+    flash[:alert] = "Category could not be destroyed: #{@category.errors.full_messages.to_sentence}"
   end
+
+  redirect_to edit_account_path(@category.account_id), status: :see_other
+end
+
 
   private
     # Use callbacks to share common setup or constraints between actions.
-    def set_category
-      @category = Category.find(params.expect(:id))
-    end
+  def set_category
+    @category = Category.find(params[:id])
+    @account = @category.account # Ensure the associated account is loaded
+  end
 
     # Only allow a list of trusted parameters through.
     def category_params

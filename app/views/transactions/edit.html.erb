@@ -1,5 +1,9 @@
 <%= render 'accounts/accnav' %>
 
-<%= render "form", transaction: @transaction %>
+<div class="d-flex justify-content-center my-4">
+  <div class="w-50">
+    <%= render "form", transaction: @transaction %>
+  </div>
+</div>
 
 <%= render 'all_transactions' %>

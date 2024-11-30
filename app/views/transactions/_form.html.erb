@@ -1,21 +1,23 @@
 <div class="row mt-2" data-controller="transaction">
+ 
+  <% if transaction.errors.any? %>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      <h4><%= pluralize(transaction.errors.count, "error") %> prohibited this transaction from being saved:</h4>
+      <ul>
+        <% transaction.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  <% end %>
+
   <div class="col-4">
     <%= form_with(model: transaction, local: true) do |form| %>
-      <% if transaction.errors.any? %>
-        <div class="alert alert-danger">
-          <h4><%= pluralize(transaction.errors.count, "error") %> prohibited this transaction from being saved:</h4>
-          <ul>
-            <% transaction.errors.full_messages.each do |message| %>
-              <li><%= message %></li>
-            <% end %>
-          </ul>
-        </div>
-      <% end %>
-
       <div class="form-row align-items-center">
         <!-- Name Field -->
         <div class="col-12 mb-3">
-          <%= form.text_field :name, class: "form-control", placeholder: "Shopping, Gas, Electricity Bill.." %>
+          <%= form.text_field :name, class: "form-control", placeholder: "Shopping, Gas.." %>
         </div>
 
         <!-- Amount Field -->
@@ -32,7 +34,7 @@
         <div class="col-12 mb-3">
           <%= form.collection_select :account_id, Account.all, :id, :title, 
               { prompt: "Select an account" }, 
-              { class: "form-control", data: { transaction_target: "account", action: "transaction#updateCategories" } } %>
+              { class: "form-select", data: { transaction_target: "account", action: "transaction#updateCategories" } } %>
         </div>
 
         <!-- Category Selection -->
@@ -42,7 +44,7 @@
                              :id, 
                              :name, 
                              { prompt: "Select a category" }, 
-                             { class: "form-control", data: { transaction_target: "category" } } %>
+                             { class: "form-select", data: { transaction_target: "category" } } %>
         </div>
 
         <!-- Hidden Date Field -->

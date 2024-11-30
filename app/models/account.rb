@@ -5,8 +5,8 @@ class Account < ApplicationRecord
 
   # Validations
   validates :title, :percentage, presence: true
-  validates :percentage, numericality: { greater_than: 0, less_than_or_equal_to: 100 }
-  validate :total_percentage_cannot_exceed_100, on: :create
+  validates :percentage, numericality: { greater_than_or_equal_to: 0 } # Ensure percentage is at least 0%
+  validate :percentage_within_available_range
 
   # Callbacks
   before_save :update_balance_based_on_percentage, if: :new_record?
@@ -22,13 +22,13 @@ class Account < ApplicationRecord
     end
   end
 
-  # Ensure the total percentage of all accounts under the same general account does not exceed 100%
-  def total_percentage_cannot_exceed_100
+  # Custom validation to ensure the percentage does not exceed the available percentage
+  def percentage_within_available_range
     return unless general_account
 
-    total_percentage = general_account.accounts.where.not(id: id).sum(:percentage) + percentage
-    if total_percentage > 100
-      errors.add(:percentage, "Total percentage of all accounts cannot exceed 100%")
+    available_percentage = 100 - general_account.accounts.where.not(id: id).sum(:percentage)
+    if percentage.present? && percentage > available_percentage
+      errors.add(:percentage, "must not exceed the available percentage (#{available_percentage}%)")
     end
   end
 end
