@@ -13,10 +13,12 @@ class GeneralExpensesController < ApplicationController
   # GET /general_expenses/new
   def new
     @general_expense = GeneralExpense.new
+    @general_expenses = GeneralExpense.all
   end
 
   # GET /general_expenses/1/edit
   def edit
+    @general_expenses = GeneralExpense.all
   end
 
   # POST /general_expenses or /general_expenses.json
@@ -26,7 +28,7 @@ class GeneralExpensesController < ApplicationController
 
     respond_to do |format|
       if @general_expense.save
-        format.html { redirect_to @general_expense, notice: "General expense was successfully created." }
+        format.html { redirect_to new_general_expense_path, notice: "General expense was successfully created." }
         format.json { render :show, status: :created, location: @general_expense }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -39,7 +41,7 @@ class GeneralExpensesController < ApplicationController
   def update
     respond_to do |format|
       if @general_expense.update(general_expense_params)
-        format.html { redirect_to @general_expense, notice: "General expense was successfully updated." }
+        format.html { redirect_to edit_general_expense_path, notice: "General expense was successfully updated." }
         format.json { render :show, status: :ok, location: @general_expense }
       else
         format.html { render :edit, status: :unprocessable_entity }

@@ -1,57 +1,15 @@
-<%= button_to general_incomes_path, method: :get, class: "btn btn-outline-success", form_class: "d-inline" do %>
-  Income
-<% end %>
-
-<%= button_to general_expenses_path, method: :get, class: "btn btn-outline-danger", form_class: "d-inline" do %>
+<%= button_to general_expenses_path, method: :get, class: "btn btn-outline-danger btn-sm", form_class: "d-inline",  disabled: true do %>
   Expense
 <% end %>
 
-<%= button_to new_general_expense_path, method: :get, class: "btn btn-outline-danger", form_class: "d-inline" do %>
+<%= button_to new_general_expense_path, method: :get, class: "btn btn-danger btn-sm", form_class: "d-inline" do %>
   New General Expense
 <% end %>
 
-<% if notice.present? %>
-  <div style="padding: 20px;">
-    <p style="color: green"><%= notice %></p>
-  </div>
+<%= button_to general_incomes_path, method: :get, class: "btn btn-outline-success btn-sm", form_class: "d-inline" do %>
+  Income
 <% end %>
 
-<% if @general_expenses.present? %>
-  <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
-    <thead style="background-color: #f8f9fa;">
-      <tr>
-        <th style="border: 1px solid #ccc; padding: 10px;">Name</th>
-        <th style="border: 1px solid #ccc; padding: 10px;">Amount (€)</th>
-        <th style="border: 1px solid #ccc; padding: 10px;">Date</th>
-        <th style="border: 1px solid #ccc; padding: 10px;">Type</th>
-        <th style="border: 1px solid #ccc; padding: 10px; text-align: center;">Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @general_expenses.each do |general_expense| %>
-        <tr id="<%= dom_id(general_expense) %>">
-          <td style="border: 1px solid #ccc; padding: 10px;">
-            <%= link_to general_expense.title, general_expense_path(general_expense), 
-                        style: "text-decoration: none; color: #007bff;" %>
-          </td>
-          <td style="border: 1px solid #ccc; padding: 10px;"><%= general_expense.amount %>€</td>
-          <td style="border: 1px solid #ccc; padding: 10px;">
-            <%= general_expense.created_at.strftime('%b %d, %Y %I:%M %p') %>
-          </td>
-          <td style="border: 1px solid #ccc; padding: 10px; text-align: center;">
-            <span style="color: red;">Expense</span>
-          </td>
-          <td style="border: 1px solid #ccc; padding: 10px; text-align: center;">
-            <%= link_to "Edit", edit_general_expense_path(general_expense), 
-                        style: "text-decoration: none; padding: 5px 10px; border: 1px solid #007bff; border-radius: 5px; background-color: #007bff; color: white; margin-right: 8px;" %>
-            <%= button_to "X", general_expense, method: :delete, 
-                          data: { turbo_confirm: "Are you sure?" }, 
-                          style: "text-decoration: none; padding: 5px 10px; border: 1px solid #dc3545; border-radius: 5px; background-color: #dc3545; color: white;" %>
-          </td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-<% else %>
-  <p style="text-align: center; font-size: 1.2em; color: #555;">No General Expenses available. Please create one to get started.</p>
-<% end %>
+<%= render 'show_expenses_table' %>
+
+

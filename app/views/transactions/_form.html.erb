@@ -1,36 +1,58 @@
-<%= form_with(model: transaction) do |form| %>
-  <% if transaction.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(transaction.errors.count, "error") %> prohibited this transaction from being saved:</h2>
-      <ul>
-        <% transaction.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
+<div class="row mt-2" data-controller="transaction">
+  <div class="col-4">
+    <%= form_with(model: transaction, local: true) do |form| %>
+      <% if transaction.errors.any? %>
+        <div class="alert alert-danger">
+          <h4><%= pluralize(transaction.errors.count, "error") %> prohibited this transaction from being saved:</h4>
+          <ul>
+            <% transaction.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
 
-  <div>
-    <%= form.label :name, style: "display: block" %>
-    <%= form.text_field :name %>
+      <div class="form-row align-items-center">
+        <!-- Name Field -->
+        <div class="col-12 mb-3">
+          <%= form.text_field :name, class: "form-control", placeholder: "Shopping, Gas, Electricity Bill.." %>
+        </div>
+
+        <!-- Amount Field -->
+        <div class="col-12 mb-3">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <div class="input-group-text">€</div>
+            </div>
+            <%= form.text_field :amount, class: "form-control", placeholder: "Enter amount" %>
+          </div>
+        </div>
+
+        <!-- Account Selection -->
+        <div class="col-12 mb-3">
+          <%= form.collection_select :account_id, Account.all, :id, :title, 
+              { prompt: "Select an account" }, 
+              { class: "form-control", data: { transaction_target: "account", action: "transaction#updateCategories" } } %>
+        </div>
+
+        <!-- Category Selection -->
+        <div class="col-12 mb-3">
+          <%= form.collection_select :category_id, 
+                             @categories || [], 
+                             :id, 
+                             :name, 
+                             { prompt: "Select a category" }, 
+                             { class: "form-control", data: { transaction_target: "category" } } %>
+        </div>
+
+        <!-- Hidden Date Field -->
+        <%= form.hidden_field :date, value: Time.current %>
+
+        <!-- Submit Button -->
+        <div class="col-12">
+          <%= form.submit class: "btn btn-primary mb-2" %>
+        </div>
+      </div>
+    <% end %>
   </div>
-
-  <div>
-    <%= form.label :amount, style: "display: block" %>
-    <%= form.text_field :amount %>
-  </div>
-
-  <div data-controller="transaction">
-    <%= form.label :account_id %>
-    <%= form.collection_select :account_id, Account.all, :id, :title, { prompt: "Select an account" }, { data: { transaction_target: "account", action: "transaction#updateCategories" } } %>
-
-    <%= form.label :category_id %>
-    <%= form.select :category_id, [], { prompt: "Select an account first" }, { data: { transaction_target: "category" } } %>
-  </div>
-
-  <%= form.hidden_field :date, value: Time.current %>
-
-  <div>
-    <%= form.submit %>
-  </div>
-<% end %>
+</div>

@@ -1,6 +1,5 @@
-<% content_for :title, "Editing transaction" %>
-
-<h1>Editing transaction</h1>
+<%= render 'accounts/accnav' %>
 
 <%= render "form", transaction: @transaction %>
-<%= link_to "Cancel", @transaction %>
+
+<%= render 'all_transactions' %>

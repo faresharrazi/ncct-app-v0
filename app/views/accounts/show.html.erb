@@ -1,67 +1,7 @@
 <%= render 'accnav' %>
-<%= form_with(model: @new_category, url: categories_path, local: true) do |f| %>
-  <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
-    <%= f.text_field :name, placeholder: "Category name", 
-                     style: "flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 5px;" %>
-    <%= f.hidden_field :account_id, value: @account.id %>
-    <%= f.submit "Add Category", 
-                 style: "padding: 10px 20px; border: 1px solid #007bff; border-radius: 5px; background-color: #007bff; color: white; font-weight: bold; white-space: nowrap;" %>
-  </div>
-<% end %>
-<header style="background-color: #f8f9fa; padding: 10px;">
-  <nav style="display: flex; justify-content: center; align-items: center; gap: 15px; flex-wrap: wrap;">
-    <% @categories.each do |category| %>
-      <%= link_to category.name, category_path(category), 
-                  style: "text-decoration: none; padding: 10px 20px; border: 1px solid #ccc; border-radius: 5px; background-color: #f8f9fa; display: inline-block;" %>
-    <% end %>
-    <!-- Edit Link on the Right -->
 
-  </nav>
-  <div style="text-align: right; margin-top: 10px;">
-  <%= link_to "(Edit)", edit_account_path(@account), 
+<%= link_to "(Edit)", edit_account_path(@account), 
               style: "font-size: 14px; text-decoration: none; margin-left: 10px;" %>
-</div>
-</header>
 
 
-
-<!-- List of Transactions -->
-<% if @transactions.any? %>
-  <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
-    <thead style="background-color: #f8f9fa;">
-      <tr>
-        <th style="border: 1px solid #ccc; padding: 10px;">Name</th>
-        <th style="border: 1px solid #ccc; padding: 10px;">Amount (€)</th>
-        <th style="border: 1px solid #ccc; padding: 10px;">Date</th>
-        <th style="border: 1px solid #ccc; padding: 10px;">Category</th>
-        <th style="border: 1px solid #ccc; padding: 10px; text-align: center;">Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @transactions.each do |transaction| %>
-        <tr>
-          <td style="border: 1px solid #ccc; padding: 10px;">
-            <%= link_to transaction.name, transaction_path(transaction), 
-                        style: "text-decoration: none; color: #007bff;" %>
-          </td>
-          <td style="border: 1px solid #ccc; padding: 10px;"><%= transaction.amount %>€</td>
-          <td style="border: 1px solid #ccc; padding: 10px;"><%= transaction.date.strftime('%b %d, %Y %I:%M %p') %></td>
-          <td style="border: 1px solid #ccc; padding: 10px;"><%= transaction.category&.name || "Uncategorized" %></td>
-          <td style="border: 1px solid #ccc; padding: 10px; text-align: center;">
-            <!-- Edit link -->
-            <%= link_to "Edit", edit_transaction_path(transaction), 
-                        style: "text-decoration: none; padding: 5px 10px; border: 1px solid #007bff; border-radius: 5px; background-color: #007bff; color: white; margin-right: 8px;" %>
-            <!-- Delete button -->
-            <%= button_to "X", transaction, method: :delete, 
-                          data: { turbo_confirm: "Are you sure?" }, 
-                          style: "text-decoration: none; padding: 5px 10px; border: 1px solid #dc3545; border-radius: 5px; background-color: #dc3545; color: white;" %>
-          </td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-<% else %>
-  <p style="text-align: center; font-size: 1.2em; color: #555;">
-    No transactions available. Please create one to get started.
-  </p>
-<% end %>
+<%= render 'transactions/all_transactions' %>

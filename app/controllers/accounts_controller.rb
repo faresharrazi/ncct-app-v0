@@ -5,7 +5,7 @@ class AccountsController < ApplicationController
   def index
     @accounts = Account.all
     @general_account = GeneralAccount.find(1)
-    @transactions = Transaction.all
+    @transactions = Transaction.order(date: :desc)
   end
 
   # GET /accounts/1 or /accounts/1.json
@@ -14,7 +14,7 @@ class AccountsController < ApplicationController
     @new_category = Category.new
     @account = Account.find(params[:id])
     @accounts = Account.all
-    @transactions = @account.transactions
+    @transactions = @account.transactions.order(date: :desc)
   end
 
   # GET /accounts/new

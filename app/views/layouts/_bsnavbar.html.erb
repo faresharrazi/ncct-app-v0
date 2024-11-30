@@ -1,40 +1,35 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
   <div class="container-fluid">
-     
-<%= button_to general_account_path(1), method: :get, class: "btn btn-outline-success", form_class: "d-inline" do %>
-  Net: <%= @general_account.net_income %>€
-<% end %> 
+ 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-     
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0 m-1">
         <!-- Link to Create Transaction -->
-        <li class="nav-item">
-          <%= link_to "+ Create Transaction", new_transaction_path, class: "nav-link" %>
-        </li>
-        
+        <% if Account.exists? %>
+          <li class="nav-item m-1">
+            <%= button_to "+ Create Transaction", new_transaction_path, method: :get, class: "btn btn-outline-primary", form_class: "d-inline" %>
+          </li>
+        <% end %>
+
         <!-- Link to Add New Account -->
-        <li class="nav-item">
-          <%= link_to "+New Account", new_account_path, class: "nav-link #{current_page?(new_account_path) ? 'active' : ''}" %>
-        </li>
+        <% if @general_account.net_income > 0 && Account.sum(:percentage) < 100 %>
+          <li class="nav-item m-1">
+             <div><%= button_to "+ New Account", new_account_path, method: :get, class: "btn btn-outline-primary", form_class: "d-inline" %>
+           (Available: <%= 100 - Account.sum(:percentage) %>%)</div>
+            </li>
+        <% end %>
       </ul>
-     
-     
+      <!-- Net income button -->
+      <%= button_to general_account_path(1), method: :get, class: "btn btn-success", form_class: "d-inline" do %>
+        Net: <%= @general_account.net_income %>€
+      <% end %>
       <ul class="navbar-nav m-1">
         <!-- Link to All Transactions -->
         <% if Transaction.exists? %>
           <li class="nav-item">
-<%= link_to "Transactions", transactions_path, class: "btn btn-outline-primary" %>
-          </li>
-        <% end %>
-      </ul>
-      <ul class="navbar-nav">
-        <!-- Link to All Accounts -->
-        <% if Transaction.exists? %>
-          <li class="nav-item">
-<%= link_to "Accounts", accounts_path, class: "btn btn-outline-primary" %>
+            <%= link_to "Transactions", transactions_path, class: "btn btn-outline-primary" %>  
           </li>
         <% end %>
       </ul>
@@ -42,6 +37,7 @@
   </div>
 </nav>
 
+ <!-- Accounts with Progress bar -->
 <div class="progress-stacked">
   <% bg_classes = ['bg-success', 'bg-info', 'bg-warning', 'bg-danger'] %>
   <% @accounts.each_with_index do |account, index| %>

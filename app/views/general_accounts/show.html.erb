@@ -1,33 +1,64 @@
-
 <%= render 'ganav' %>
 
 <!-- General Incomes Section -->
-
 <% if @general_expenses.present? || @general_incomes.present? %>
-  <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
-      <thead style="background-color: #f8f9fa;">
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Date</th>
+        <th scope="col">Name</th>
+        <th scope="col">Amount (€)</th>
+        <th scope="col">Type</th>
+        <th scope="col" class="text-center">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if @general_incomes.any? %>
+        <% @general_incomes.each do |income| %>
+          <tr>
+            <td><%= income.created_at.strftime("%Y-%m-%d") %></td>
+            <td><%= income.title %></td>
+            <td><%= income.amount %></td>
+            <td><span class="text-success">Income</span></td>
+            <td class="text-center">
+              <div class="d-flex justify-content-center">
+                <%= link_to "Edit", edit_general_income_path(income), class: "btn btn-sm btn-outline-primary me-2" %>
+                <%= button_to "Delete", general_income_path(income), method: :delete, data: { turbo_confirm: "Are you sure you want to delete this income?" }, class: "btn btn-sm btn-outline-danger" %>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+      <% else %>
         <tr>
-          <th style="border: 1px solid #ccc; padding: 10px;">Name</th>
-          <th style="border: 1px solid #ccc; padding: 10px;">Amount (€)</th>
-          <th style="border: 1px solid #ccc; padding: 10px;">Date</th>
-          <th style="border: 1px solid #ccc; padding: 10px;">Type</th>
-          <th style="border: 1px solid #ccc; padding: 10px; text-align: center;">Actions</th>
+          <td colspan="5" class="text-center">No General Incomes added yet.</td>
         </tr>
-      </thead>
-      <tbody>
-  <% end %>
-          <% if @general_incomes.any? %>
-              <%= render partial: "general_incomes/general_income", collection: @general_incomes, as: :general_income %>
-          <% else %>
-            <p>No General Incomes added yet.</p>
-          <% end %>
+      <% end %>
 
-          <% if @general_expenses.any? %>
-              <%= render partial: "general_expenses/general_expense", collection: @general_expenses, as: :general_expense %>
-          <% else %>
-            <p>No General Expenses added yet.</p>
-          <% end %>
-<% if @general_expenses.present? || @general_incomes.present? %>
-      </tbody>
-    </table>
-  <% end %>
+      <% if @general_expenses.any? %>
+        <% @general_expenses.each do |expense| %>
+          <tr>
+            <td><%= expense.created_at.strftime("%Y-%m-%d") %></td>
+            <td><%= expense.title %></td>
+            <td><%= expense.amount %></td>
+            <td><span class="text-danger">Expense</span></td>
+            <td class="text-center">
+              <div class="d-flex justify-content-center">
+                <%= link_to "Edit", edit_general_expense_path(expense), class: "btn btn-sm btn-outline-primary me-2" %>
+                <%= button_to "Delete", general_expense_path(expense), method: :delete, data: { turbo_confirm: "Are you sure you want to delete this expense?" }, class: "btn btn-sm btn-outline-danger" %>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+      <% else %>
+        <tr>
+          <td colspan="5" class="text-center">No General Expenses added yet.</td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>No General Incomes or Expenses added yet.</p>
+<% end %>
+
+
+

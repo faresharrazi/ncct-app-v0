@@ -4,7 +4,7 @@ class TransactionsController < ApplicationController
   def index
     @general_account = GeneralAccount.find_by(id: 1)
     @account = Account.find_by(id: params[:account_id]) # Optional account
-    @transactions = Transaction.all
+    @transactions = Transaction.order(date: :desc)
 
     # Apply scopes conditionally
     @transactions = @transactions.by_account(params[:account_id]) if params[:account_id].present?
@@ -21,10 +21,13 @@ class TransactionsController < ApplicationController
   # GET /transactions/new
   def new
     @transaction = Transaction.new
+    @transactions = Transaction.order(date: :desc)
   end
 
   # GET /transactions/1/edit
   def edit
+    @categories = @transaction.account.categories if @transaction.account
+    @transactions = Transaction.order(date: :desc)
   end
 
   # POST /transactions or /transactions.json
@@ -39,12 +42,10 @@ class TransactionsController < ApplicationController
 
     respond_to do |format|
       if @transaction.save
-        Rails.logger.info("Transaction created successfully: #{@transaction.inspect}")
-        format.html { redirect_to @transaction, notice: "Transaction was successfully created." }
+        format.html { redirect_to new_transaction_path, notice: "Transaction was successfully created." }
         format.json { render :show, status: :created, location: @transaction }
       else
-        Rails.logger.error("Transaction creation failed: #{@transaction.errors.full_messages}")
-        Rails.logger.error("Transaction attributes: #{@transaction.attributes}")
+       
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @transaction.errors, status: :unprocessable_entity }
       end
@@ -63,7 +64,7 @@ class TransactionsController < ApplicationController
   def update
     respond_to do |format|
       if @transaction.update(transaction_params)
-        format.html { redirect_to @transaction, notice: "Transaction was successfully updated." }
+        format.html { redirect_to edit_transaction_path, notice: "Transaction was successfully updated." }
         format.json { render :show, status: :ok, location: @transaction }
       else
         format.html { render :edit, status: :unprocessable_entity }
