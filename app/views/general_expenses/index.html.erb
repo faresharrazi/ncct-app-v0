@@ -1,9 +1,17 @@
+<% if @general_expenses.any? %>
+  <%= render 'show_expenses_table' %>
+<% else %>
+  <div class="d-flex justify-content-center my-4">
+    <div class="alert alert-warning text-center" role="alert">
+      No General Expenses added yet.
+    </div>
+  </div>
+<% end %>
 <div class="d-flex justify-content-center mt-3">
   <%= button_to new_general_expense_path, method: :get, class: "btn btn-outline-danger btn-sm", form_class: "d-inline" do %>
     New General Expense
   <% end %>
 </div>
 
-<%= render 'show_expenses_table' %>
 
 

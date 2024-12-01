@@ -26,13 +26,22 @@
 
   <body>
     <div class="container mx-auto w-75">
-      <%= render 'layouts/notice' %>
-      <div class="sticky-top">
-        <%= render 'layouts/date_filter' %>
-        <%= render 'layouts/bsnavbar' %>
+      
+      <div class="sticky-top" style="z-index: 1020; background-color: white; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);">
+        <% if GeneralIncome.exists? || GeneralExpense.exists? %>
+          <div style="background-color: white;">
+            <%= render 'layouts/date_filter' %>
+          </div>
+        <% end %>
+        <div style="background-color: white;">
+          <%= render 'layouts/bsnavbar' %>
+        </div>
       </div>
       
-      <%= yield %>
+      <div class="container mt-4 pt-1">
+        <%= render 'layouts/notice' %>
+        <%= yield %>
+      </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>

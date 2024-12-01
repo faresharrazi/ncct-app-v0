@@ -1,0 +1,35 @@
+<div class="card shadow-sm mb-3">
+  <div class="card-body">
+    <h5 class="card-title"><%= @account.title %></h5>
+    <p><strong>Percentage:</strong> <%= @account.percentage %>%</p>
+    <p><strong>Available Balance:</strong> <%= number_with_precision(@account.balance, precision: 2) %>€</p>
+    <p><strong>Total Transactions:</strong> 
+      <%= number_with_precision(@account.transactions.sum(:amount), precision: 2) %>€
+    </p>
+  </div>
+</div>
+
+<div class="card shadow-sm">
+  <div class="card-body">
+    <h5 class="card-title">Categories</h5>
+    <% if @account.categories.any? %>
+      <div class="row g-2">
+        <% @account.categories.each do |category| %>
+          <div class="col-6 col-md-4">
+            <div class="card text-center shadow-sm" style="font-size: 0.8rem; height: 3rem;">
+              <div class="card-body p-2">
+                <h6 class="card-title text-truncate mb-0" title="<%= category.name %>"><%= category.name %></h6>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <p class="text-muted text-center">No categories linked to this account.</p>
+    <% end %>
+  </div>
+</div>
+  <!-- Edit Account/Categories Button -->
+    <%= link_to "Edit Account/Categories", edit_account_path(@account), 
+                class: "btn btn-outline-info btn-sm mt-2", 
+                role: "button" %>

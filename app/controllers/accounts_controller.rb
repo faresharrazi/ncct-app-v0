@@ -9,7 +9,7 @@ class AccountsController < ApplicationController
 
     # Apply Date Range Filters
     if session[:start_date] && session[:end_date]
-      @transactions = @transactions.where(date: session[:start_date]..session[:end_date])
+      @transactions = @transactions.where(date: session[:start_date]..session[:end_date]).order(date: :desc)
     end
   end
 
@@ -22,7 +22,7 @@ class AccountsController < ApplicationController
 
     # Apply Date Range Filters
     if session[:start_date] && session[:end_date]
-      @transactions = @transactions.where(date: session[:start_date]..session[:end_date])
+      @transactions = @transactions.where(date: session[:start_date]..session[:end_date]).order(date: :desc)
     end
   end
 

@@ -1,73 +1,35 @@
-<div class="row mb-2 g-2 justify-content-center">
-  <% @accounts.each do |account| %>
-    <div class="col-md-2">
-      <% if current_page?(account_path(account)) %>
-        <div class="card text-center shadow-sm bg-secondary text-white" style="font-size: 0.9rem; cursor: not-allowed;">
-          <div class="card-body p-3">
-            <h6 class="card-title text-white"><%= account.title %></h6>
-            <p class="card-text mb-2">
-              <%= number_with_precision(account.balance, precision: 2) %>€
-            </p>
-          </div>
-        </div>
-      <% else %>
-        <%= link_to account_path(account), class: "text-decoration-none card-hover" do %>
-          <div class="card text-center shadow-sm" style="font-size: 0.9rem;">
-            <div class="card-body p-3">
-              <h6 class="card-title text-info"><%= account.title %></h6>
-              <p class="card-text mb-2">
-                <%= number_with_precision(account.balance, precision: 2) %>€
-              </p>
-            </div>
-          </div>
+<div class="container p-2">
+  <div class="row g-3 justify-content-center">
+    <% @accounts.each do |account| %>
+      <div class="col-auto">
+        <% if current_page?(account_path(account)) %>
+          <button class="btn btn-secondary btn-sm shadow-sm text-white" style="cursor: not-allowed;" disabled>
+            <span class="d-block text-truncate" title="<%= account.title %>"><%= truncate(account.title, length: 10) %></span>
+            <span><%= number_with_precision(account.balance, precision: 2) %>€</span>
+          </button>
+        <% else %>
+          <%= link_to account_path(account), class: "btn btn-outline-info btn-sm shadow-sm text-decoration-none" do %>
+            <span class="d-block text-truncate" title="<%= account.title %>"><%= truncate(account.title, length: 10) %></span>
+            <span><%= number_with_precision(account.balance, precision: 2) %>€</span>
+          <% end %>
         <% end %>
-      <% end %>
-    </div>
-  <% end %>
+      </div>
+    <% end %>
 
-  <% if @general_account.net_income > 0 && Account.sum(:percentage) < 100 %>
-    <div class="col-md-2">
-      <% if current_page?(new_account_path) %>
-        <div class="card text-center shadow-sm bg-secondary text-white" style="font-size: 0.9rem; cursor: not-allowed;">
-          <div class="card-body p-3">
-            <h6 class="card-title text-white">+ Create Account</h6>
-            <p class="card-text mb-2 text-muted">
-              Available: <%= 100 - Account.sum(:percentage) %>%
-            </p>
-          </div>
-        </div>
-      <% else %>
-        <%= link_to new_account_path, method: :get, class: "text-decoration-none card-hover" do %>
-          <div class="card text-center shadow-sm bg-light" style="font-size: 0.9rem;">
-            <div class="card-body p-3">
-              <h6 class="card-title text-primary">+ Create Account</h6>
-              <p class="card-text mb-2 text-muted">
-                Available: <%= 100 - Account.sum(:percentage) %>%
-              </p>
-            </div>
-          </div>
+    <% if @general_account.net_income > 0 && Account.sum(:percentage) < 100 %>
+      <div class="col-auto">
+        <% if current_page?(new_account_path) %>
+          <button class="btn btn-secondary btn-sm shadow-sm text-white" style="cursor: not-allowed;" disabled>
+            <span class="d-block">+ Create Account</span>
+            <span>Available: <%= 100 - Account.sum(:percentage) %>%</span>
+          </button>
+        <% else %>
+          <%= link_to new_account_path, class: "btn btn-outline-primary btn-sm shadow-sm text-decoration-none" do %>
+            <span class="d-block">+ Create Account</span>
+            <span>Available: <%= 100 - Account.sum(:percentage) %>%</span>
+          <% end %>
         <% end %>
-      <% end %>
-    </div>
-  <% end %>
+      </div>
+    <% end %>
+  </div>
 </div>
-
-<style>
-  .card-hover {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    display: block;
-  }
-
-  .card-hover:hover {
-    transform: scale(1.05);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-  }
-
-  .bg-secondary {
-    background-color: #6c757d !important;
-  }
-
-  .text-white {
-    color: white !important;
-  }
-</style>

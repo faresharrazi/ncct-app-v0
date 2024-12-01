@@ -1,13 +1,98 @@
-<div class="d-flex justify-content-center align-items-center my-2">
-  <!-- Button to Create New Transaction -->
-  <%= link_to "New Transaction", new_transaction_path, 
-              class: "btn btn-outline-info btn-sm me-2", 
-              role: "button" %>
-              
-  <!-- Edit Account/Categories Button -->
-  <%= link_to "Edit Account/Categories", edit_account_path(@account), 
-              class: "btn btn-outline-info btn-sm", 
-              role: "button" %>
+<div class="row">
+  <!-- Transactions Table -->
+  <div class="col-lg-9">
+    <div class="row">
+      <!-- Transactions Table -->
+      <div class="col-12">
+        <% if @transactions.any? %>
+          <%= render 'transactions/all_transactions' %>
+        <% else %>
+          <div class="d-flex justify-content-center my-4">
+            <div class="alert alert-warning text-center" role="alert">
+              No transactions added yet.
+            </div>
+          </div>
+          <div class="d-flex justify-content-center mt-3">
+            <%= button_to new_transaction_path, method: :get, class: "btn btn-outline-primary btn-sm", form_class: "d-inline" do %>
+              Create Transaction
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <!-- Account Statistics and Categories -->
+  <div class="col-lg-3">
+    <!-- Account Statistics -->
+    <div class="card shadow-sm mb-4 border-0">
+      <div class="card-body p-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h5 class="card-title mb-0 text-primary"><%= @account.title %></h5>
+          <%= link_to "Edit", edit_account_path(@account), 
+                      class: "btn btn-sm btn-outline-primary" %>
+        </div>
+        <hr class="my-3">
+        <p class="mb-2">
+          <span class="text-muted">Percentage:</span> 
+          <span class="fw-bold"><%= @account.percentage %>%</span>
+        </p>
+        <p class="mb-2">
+          <span class="text-muted">Available Balance:</span> 
+          <span class="fw-bold text-success"><%= number_with_precision(@account.balance, precision: 2) %>€</span>
+        </p>
+        <p class="mb-0">
+          <span class="text-muted">Total Transactions:</span> 
+          <span class="fw-bold text-danger"><%= number_with_precision(@account.transactions.sum(:amount), precision: 2) %>€</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- Categories -->
+    <div class="card shadow-sm border-0">
+      <div class="card-body p-4">
+        <h6 class="card-title text-primary mb-3">Categories</h6>
+        <div class="d-flex flex-wrap gap-2">
+          <% @account.categories.each do |category| %>
+            <div class="category-box">
+              <%= category.name %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
-<%= render 'transactions/all_transactions' %>
+<style>
+  .category-box {
+    padding: 5px 10px;
+    background-color: #f8f9fa;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    font-size: 0.85rem;
+    color: #212529;
+    text-align: center;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+
+  .card {
+    background-color: #ffffff;
+    border-radius: 10px;
+  }
+
+  .card-title {
+    font-size: 1rem;
+  }
+
+  .card-body {
+    font-size: 0.9rem;
+  }
+
+  .btn-outline-primary {
+    font-size: 0.75rem;
+    padding: 5px 10px;
+  }
+</style>

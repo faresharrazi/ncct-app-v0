@@ -75,15 +75,16 @@ end
     end
   end
 
-  # DELETE /transactions/1 or /transactions/1.json
-  def destroy
-    @transaction.destroy!
+# DELETE /transactions/1 or /transactions/1.json
+def destroy
+  @transaction.destroy!
 
-    respond_to do |format|
-      format.html { redirect_to transactions_path, status: :see_other, notice: "Transaction was successfully destroyed." }
-      format.json { head :no_content }
-    end
+  respond_to do |format|
+    format.html { redirect_back fallback_location: transactions_path, notice: "Transaction was successfully destroyed." }
+    format.json { head :no_content }
   end
+end
+
 
   private
     # Use callbacks to share common setup or constraints between actions.

@@ -1,11 +1,16 @@
-<% if Account.exists? %>
-
-    <div class="d-flex justify-content-center my-2">
-    <%= button_to "New Transaction", new_transaction_path, method: :get, 
-                class: "btn btn-outline-info btn-sm", 
-                role: "button" %>
+<% if @transactions.any? %>
+  <%= render 'all_transactions' %>
+<% else %>
+  <div class="d-flex justify-content-center my-4">
+    <div class="alert alert-warning text-center" role="alert">
+      No transactions added yet.
     </div>
-
+  </div>
+  <div class="d-flex justify-content-center mt-3">
+  <%= button_to new_transaction_path, method: :get, class: "btn btn-outline-primary btn-sm", form_class: "d-inline" do %>
+    Create Transaction
+  <% end %>
+</div>
 <% end %>
 
-<%= render 'all_transactions' %>
+

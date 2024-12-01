@@ -103,7 +103,7 @@ class GeneralAccountsController < ApplicationController
   session[:start_date] = start_date
   session[:end_date] = end_date
 
-  redirect_to request.referer || root_path, notice: "Filters applied."
+  redirect_to request.referer
 end
 
 
@@ -113,7 +113,7 @@ def clear
   session[:end_date] = nil
 
   # Redirect back to the current page
-  redirect_back fallback_location: root_path, notice: "Filters cleared."
+  redirect_back fallback_location: root_path
 end
 
 

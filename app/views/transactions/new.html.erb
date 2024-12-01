@@ -4,4 +4,12 @@
   </div>
 </div>
 
-<%= render 'all_transactions' %>
+<% if @transactions.any? %>
+  <%= render 'all_transactions' %>
+<% else %>
+  <div class="d-flex justify-content-center my-4">
+    <div class="alert alert-warning text-center" role="alert">
+      No transactions added yet.
+    </div>
+  </div>
+<% end %>

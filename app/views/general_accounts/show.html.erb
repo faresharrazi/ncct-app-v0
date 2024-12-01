@@ -1,62 +1,115 @@
-<!-- General Incomes Section -->
-<% if @general_expenses.present? || @general_incomes.present? %>
-  <table class="table">
-    <thead>
-      <tr>
-        <th scope="col">Date</th>
-        <th scope="col">Name</th>
-        <th scope="col">Amount (€)</th>
-        <th scope="col">Type</th>
-        <th scope="col" class="text-center">Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% if @general_incomes.any? %>
-        <% @general_incomes.each do |income| %>
+<div class="container">
+  <!-- General Incomes and Expenses Section -->
+  <% if @general_expenses.present? || @general_incomes.present? %>
+    <div id="general-transactions">
+      <table class="table table-sm table-striped align-middle">
+        <thead class="table-light">
           <tr>
-            <td><%= income.created_at.strftime("%Y-%m-%d") %></td>
-            <td><%= income.title %></td>
-            <td><%= income.amount %></td>
-            <td><span class="text-success">Income</span></td>
-            <td class="text-center">
-              <div class="d-flex justify-content-center">
-                <%= link_to "Edit", edit_general_income_path(income), class: "btn btn-sm btn-outline-primary me-2" %>
-                <%= button_to "Delete", general_income_path(income), method: :delete, data: { turbo_confirm: "Are you sure you want to delete this income?" }, class: "btn btn-sm btn-outline-danger" %>
-              </div>
-            </td>
+            <th scope="col" class="text-center">Date</th>
+            <th scope="col">Name</th>
+            <th scope="col" class="text-center">Amount</th>
+            <th scope="col">Type</th>
+            <th scope="col" class="text-center">Actions</th>
           </tr>
-        <% end %>
-      <% else %>
-        <tr>
-          <td colspan="5" class="text-center">No General Incomes added yet.</td>
-        </tr>
-      <% end %>
+        </thead>
+        <tbody>
+          <% @general_incomes.each do |income| %>
+            <tr>
+              <td class="text-center text-truncate" title="<%= income.created_at.strftime('%b, %d') %>">
+                <%= income.created_at.strftime("%b, %d") %>
+              </td>
+              <td class="text-truncate" title="<%= income.title %>">
+                <%= income.title %>
+              </td>
+              <td class="text-center text-truncate">
+                <%= number_with_precision(income.amount, precision: 2) %>€
+              </td>
+              <td class="text-success">Income</td>
+              <td class="text-center">
+                <div class="d-flex justify-content-center gap-1">
+                  <%= link_to "Edit", edit_general_income_path(income), class: "btn btn-sm btn-outline-primary btn-width" %>
+                  <%= button_to "Delete", general_income_path(income), method: :delete, class: "btn btn-sm btn-outline-danger btn-width", data: { turbo_confirm: "Are you sure you want to delete this income?" } %>
+                </div>
+              </td>
+            </tr>
+          <% end %>
 
-      <% if @general_expenses.any? %>
-        <% @general_expenses.each do |expense| %>
-          <tr>
-            <td><%= expense.created_at.strftime("%Y-%m-%d") %></td>
-            <td><%= expense.title %></td>
-            <td><%= expense.amount %></td>
-            <td><span class="text-danger">Expense</span></td>
-            <td class="text-center">
-              <div class="d-flex justify-content-center">
-                <%= link_to "Edit", edit_general_expense_path(expense), class: "btn btn-sm btn-outline-primary me-2" %>
-                <%= button_to "Delete", general_expense_path(expense), method: :delete, data: { turbo_confirm: "Are you sure you want to delete this expense?" }, class: "btn btn-sm btn-outline-danger" %>
-              </div>
-            </td>
-          </tr>
-        <% end %>
-      <% else %>
-        <tr>
-          <td colspan="5" class="text-center">No General Expenses added yet.</td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-<% else %>
-  <p>No General Incomes or Expenses added yet.</p>
-<% end %>
+          <% @general_expenses.each do |expense| %>
+            <tr>
+              <td class="text-center text-truncate" title="<%= expense.created_at.strftime('%b, %d') %>">
+                <%= expense.created_at.strftime("%b, %d") %>
+              </td>
+              <td class="text-truncate" title="<%= expense.title %>">
+                <%= expense.title %>
+              </td>
+              <td class="text-center text-truncate">
+                <%= number_with_precision(expense.amount, precision: 2) %>€
+              </td>
+              <td class="text-danger">Expense</td>
+              <td class="text-center">
+                <div class="d-flex justify-content-center gap-1">
+                  <%= link_to "Edit", edit_general_expense_path(expense), class: "btn btn-sm btn-outline-primary btn-width" %>
+                  <%= button_to "Delete", general_expense_path(expense), method: :delete, class: "btn btn-sm btn-outline-danger btn-width", data: { turbo_confirm: "Are you sure you want to delete this expense?" } %>
+                </div>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% else %>
+    <div class="d-flex justify-content-center my-4">
+      <div class="alert alert-warning text-center" role="alert">
+        Add a General Income to start.
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<style>
+  #general-transactions {
+    font-size: 0.85rem;
+  }
+
+  .table {
+    border-radius: 5px;
+    overflow: hidden;
+  }
+
+  .table th, .table td {
+    padding: 0.5rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .table-sm th, .table-sm td {
+    padding: 0.4rem;
+  }
+
+  .table-striped tbody tr:nth-of-type(odd) {
+    background-color: #f9f9f9;
+  }
+
+  .table-light {
+    background-color: #f8f9fa;
+  }
+
+  .btn-outline-primary, .btn-outline-danger {
+    font-size: 0.75rem;
+    padding: 0.3rem 0.8rem;
+  }
+
+  .btn-width {
+    width: 70px; /* Ensures consistent button width */
+  }
+
+  .text-truncate {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+</style>
 
 
 

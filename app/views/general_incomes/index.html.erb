@@ -1,8 +1,16 @@
+<% if @general_incomes.any? %>
+  <%= render 'show_incomes_table' %>
+<% else %>
+  <div class="d-flex justify-content-center my-4">
+    <div class="alert alert-warning text-center" role="alert">
+      No General Incomes added yet.
+    </div>
+  </div>
+<% end %>
 <div class="d-flex justify-content-center mt-3">
   <%= button_to new_general_income_path, method: :get, class: "btn btn-outline-success btn-sm", form_class: "d-inline" do %>
     New General Income
   <% end %>
 </div>
 
-<%= render 'show_incomes_table' %>
 

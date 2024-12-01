@@ -1,8 +1,15 @@
 <nav class="navbar bg-body-tertiary shadow-sm">
   <div class="container-fluid justify-content-center">
-    <!-- Centered Button -->
-    <%= button_to general_account_path(1), method: :get, class: "btn btn-success", form_class: "d-inline" do %>
+    <!-- General Account Net Income Button -->
+    <%= button_to general_account_path(1), method: :get, class: "btn btn-success btn-lg px-5", form_class: "d-inline" do %>
       <%= number_to_currency(@general_account.net_income, unit: "€") %>
+    <% end %>
+    
+    <% if Account.exists? %>
+      <!-- New Transaction Button -->
+      <%= button_to "New Transaction", new_transaction_path, method: :get, 
+                    class: "btn btn-primary btn-lg ms-3 px-5", 
+                    role: "button" %>
     <% end %>
   </div>
 </nav>
@@ -25,14 +32,16 @@
 </div>
 
 <div class="d-flex justify-content-center my-2">
-  <!-- All Transactions Button -->
+<!-- All Transactions Button -->
+<% if Account.exists? %>
   <% if current_page?(transactions_path) %>
-    <button class="btn btn-info btn-sm me-2" disabled>All Transactions</button>
+    <button class="btn btn-primary btn-sm me-2" disabled>All Transactions</button>
   <% else %>
-    <%= button_to transactions_path, method: :get, class: "btn btn-outline-info btn-sm me-2", form_class: "d-inline" do %>
+    <%= button_to transactions_path, method: :get, class: "btn btn-outline-primary btn-sm me-2", form_class: "d-inline" do %>
       All Transactions
     <% end %>
   <% end %>
+<% end %>
 
   <!-- Global Income Button -->
   <% if current_page?(general_incomes_path) %>
