@@ -1,3 +1,11 @@
-<%= render 'accounts/accnav' %>
+<% if Account.exists? %>
+
+    <div class="d-flex justify-content-center my-2">
+    <%= button_to "New Transaction", new_transaction_path, method: :get, 
+                class: "btn btn-outline-info btn-sm", 
+                role: "button" %>
+    </div>
+
+<% end %>
 
 <%= render 'all_transactions' %>

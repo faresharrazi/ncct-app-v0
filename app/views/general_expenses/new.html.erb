@@ -1,7 +1,9 @@
-<%= button_to general_expenses_path, method: :get, class: "btn btn-outline-danger btn-sm", form_class: "d-inline" do %>
-  Back
-<% end %>
-
-<%= render "form", general_expense: @general_expense %>
-
+<div class="d-flex justify-content-center my-4">
+  <div class="w-50">
+    <%= render "form", general_expense: @general_expense %>
+      <%= button_to general_expenses_path, method: :get, class: "btn btn-outline-danger btn-sm", form_class: "d-inline" do %>
+        Back
+      <% end %>
+  </div>
+</div>
 <%= render 'show_expenses_table' %>

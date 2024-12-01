@@ -1,52 +1,14 @@
-<nav class="navbar navbar-expand-lg bg-body-tertiary shadow-sm">
-  <div class="container-fluid">
-    <!-- Navbar Toggle for Small Screens -->
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <!-- Net Income Button -->
-    <div class="d-flex align-items-center">
-      <%= button_to general_account_path(1), method: :get, class: "btn btn-success me-2", form_class: "d-inline" do %>
-        <%= number_to_currency(@general_account.net_income, unit: "€") %>
-      <% end %>
-    </div>
-
-    <!-- Navbar Links -->
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <!-- Link to All Transactions -->
-        <% if Transaction.exists? %>
-          <li class="nav-item">
-            <%= link_to "All Transactions", transactions_path, class: "btn btn-outline-primary me-2" %>
-          </li>
-        <% end %>
-
-        <!-- Link to Add New Account -->
-        <% if @general_account.net_income > 0 && Account.sum(:percentage) < 100 %>
-          <li class="nav-item">
-            <div class="d-flex align-items-center">
-              <%= button_to "Create Account", new_account_path, method: :get, class: "btn btn-outline-primary me-2", form_class: "d-inline" %>
-              <span class="badge bg-info text-dark">
-                Available: <%= 100 - Account.sum(:percentage) %>%
-              </span>
-            </div>
-          </li>
-        <% end %>
-      </ul>
-
-      <!-- New Transaction Button -->
-      <% if Account.exists? %>
-        <div class="d-flex">
-          <%= button_to "New Transaction", new_transaction_path, method: :get, class: "btn btn-outline-primary" %>
-        </div>
-      <% end %>
-    </div>
+<nav class="navbar bg-body-tertiary shadow-sm">
+  <div class="container-fluid justify-content-center">
+    <!-- Centered Button -->
+    <%= button_to general_account_path(1), method: :get, class: "btn btn-success", form_class: "d-inline" do %>
+      <%= number_to_currency(@general_account.net_income, unit: "€") %>
+    <% end %>
   </div>
 </nav>
 
 <!-- Accounts with Progress Bar -->
-<div class="progress-stacked mt-3">
+<div class="progress-stacked my-2">
   <% bg_classes = ['bg-success', 'bg-info', 'bg-warning', 'bg-danger'] %>
   <% @accounts.each_with_index do |account, index| %>
     <div class="progress mb-2" role="progressbar" 
@@ -61,4 +23,37 @@
     </div>
   <% end %>
 </div>
-<br>
+
+<div class="d-flex justify-content-center my-2">
+  <!-- All Transactions Button -->
+  <% if current_page?(transactions_path) %>
+    <button class="btn btn-info btn-sm me-2" disabled>All Transactions</button>
+  <% else %>
+    <%= button_to transactions_path, method: :get, class: "btn btn-outline-info btn-sm me-2", form_class: "d-inline" do %>
+      All Transactions
+    <% end %>
+  <% end %>
+
+  <!-- Global Income Button -->
+  <% if current_page?(general_incomes_path) %>
+    <button class="btn btn-success btn-sm me-2" disabled>Global Income</button>
+  <% else %>
+    <%= button_to general_incomes_path, method: :get, class: "btn btn-outline-success btn-sm me-2", form_class: "d-inline" do %>
+      Global Income
+    <% end %>
+  <% end %>
+
+  <!-- Global Expense Button -->
+  <% if current_page?(general_expenses_path) %>
+    <button class="btn btn-danger btn-sm" disabled>Global Expense</button>
+  <% else %>
+    <%= button_to general_expenses_path, method: :get, class: "btn btn-outline-danger btn-sm", form_class: "d-inline" do %>
+      Global Expense
+    <% end %>
+  <% end %>
+</div>
+
+<%= render 'accounts/accnav' %>
+
+
+

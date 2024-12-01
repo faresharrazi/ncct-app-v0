@@ -1,7 +1,12 @@
-<%= button_to general_incomes_path, method: :get, class: "btn btn-outline-success btn-sm", form_class: "d-inline" do %>
-  Back
-<% end %>
 
-<%= render "form", general_income: @general_income %>
+<div class="d-flex justify-content-center my-4">
+  <div class="w-50">
+    <%= render "form", general_income: @general_income %>
+    <%= button_to general_incomes_path, method: :get, class: "btn btn-outline-success btn-sm", form_class: "d-inline" do %>
+      Back
+    <% end %>
+  </div>
+</div>
+
 
 <%= render 'show_incomes_table' %>

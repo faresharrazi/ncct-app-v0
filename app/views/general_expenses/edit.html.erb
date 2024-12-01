@@ -1,5 +1,7 @@
-<%= render 'general_accounts/ganav' %>
-
-<%= render "form", general_expense: @general_expense %>
+<div class="d-flex justify-content-center my-4">
+  <div class="w-50">
+    <%= render "form", general_expense: @general_expense %>
+  </div>
+</div>
 
 <%= render 'show_expenses_table' %>

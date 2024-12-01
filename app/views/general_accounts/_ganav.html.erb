@@ -1,7 +1,17 @@
-<%= button_to general_incomes_path, method: :get, class: "btn btn-outline-success btn-sm", form_class: "d-inline" do %>
-  Income
-<% end %>
+<%= render 'accounts/accnav' %>
 
-<%= button_to general_expenses_path, method: :get, class: "btn btn-outline-danger btn-sm", form_class: "d-inline" do %>
-  Expense
-<% end %>
+<div class="d-flex justify-content-center mt-3">
+  <%= button_to transactions_path, method: :get, class: "btn btn-outline-info btn-sm me-2", form_class: "d-inline" do %>
+    All Transactions
+  <% end %>
+
+  <%= button_to general_incomes_path, method: :get, class: "btn btn-outline-success btn-sm me-2", form_class: "d-inline" do %>
+    Global Income
+  <% end %>
+
+  <%= button_to general_expenses_path, method: :get, class: "btn btn-outline-danger btn-sm", form_class: "d-inline" do %>
+    Gloabl Expense
+  <% end %>
+
+</div>
+

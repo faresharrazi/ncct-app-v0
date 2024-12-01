@@ -1,5 +1,13 @@
-<%= render 'accnav' %>
-
-<%= link_to "Edit Account/Categories", edit_account_path(@account), class: "btn btn-primary btn-sm ms-2", role: "button" %>
+<div class="d-flex justify-content-center align-items-center my-2">
+  <!-- Button to Create New Transaction -->
+  <%= link_to "New Transaction", new_transaction_path, 
+              class: "btn btn-outline-info btn-sm me-2", 
+              role: "button" %>
+              
+  <!-- Edit Account/Categories Button -->
+  <%= link_to "Edit Account/Categories", edit_account_path(@account), 
+              class: "btn btn-outline-info btn-sm", 
+              role: "button" %>
+</div>
 
 <%= render 'transactions/all_transactions' %>

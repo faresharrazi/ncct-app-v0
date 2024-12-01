@@ -1,14 +1,8 @@
-<%= button_to general_incomes_path, method: :get, class: "btn btn-outline-secondary btn-sm", form_class: "d-inline", disabled: true do %>
-  Income
-<% end %>
-
-<%= button_to general_expenses_path, method: :get, class: "btn btn-outline-danger btn-sm", form_class: "d-inline" do %>
-  Expense
-<% end %>
-
-<%= button_to new_general_income_path, method: :get, class: "btn btn-success btn-sm", form_class: "d-inline" do %>
-  New General Income
-<% end %>
+<div class="d-flex justify-content-center mt-3">
+  <%= button_to new_general_income_path, method: :get, class: "btn btn-outline-success btn-sm", form_class: "d-inline" do %>
+    New General Income
+  <% end %>
+</div>
 
 <%= render 'show_incomes_table' %>
 

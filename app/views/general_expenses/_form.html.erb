@@ -1,5 +1,5 @@
   <div class="row mt-2">
-    <div class="col-4">
+    
       <%= form_with(model: general_expense, local: true) do |form| %>
         <% if general_expense.errors.any? %>
           <div class="alert alert-danger">
@@ -37,5 +37,4 @@
           </div>
         </div>
       <% end %>
-    </div>
   </div>
