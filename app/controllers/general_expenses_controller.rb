@@ -1,30 +1,46 @@
 class GeneralExpensesController < ApplicationController
-  before_action :set_general_expense, only: %i[ show edit update destroy ]
+  before_action :set_general_expense, only: %i[show edit update destroy]
 
   # GET /general_expenses or /general_expenses.json
   def index
-    @general_expenses = GeneralExpense.all
+    @general_expenses = GeneralExpense.order(created_at: :desc)
+
+    # Apply Date Range Filters
+    if session[:start_date] && session[:end_date]
+      @general_expenses = @general_expenses.where(created_at: session[:start_date]..session[:end_date]).order(created_at: :desc)
+    end
   end
 
   # GET /general_expenses/1 or /general_expenses/1.json
   def show
+    # Apply Date Range Filters for Show if needed
   end
 
   # GET /general_expenses/new
   def new
     @general_expense = GeneralExpense.new
-    @general_expenses = GeneralExpense.all
+    @general_expenses = GeneralExpense.order(created_at: :desc)
+
+    # Apply Date Range Filters
+    if session[:start_date] && session[:end_date]
+      @general_expenses = @general_expenses.where(created_at: session[:start_date]..session[:end_date])
+    end
   end
 
   # GET /general_expenses/1/edit
   def edit
-    @general_expenses = GeneralExpense.all
+    @general_expenses = GeneralExpense.order(created_at: :desc)
+
+    # Apply Date Range Filters
+    if session[:start_date] && session[:end_date]
+      @general_expenses = @general_expenses.where(created_at: session[:start_date]..session[:end_date])
+    end
   end
 
   # POST /general_expenses or /general_expenses.json
   def create
     @general_expense = GeneralExpense.new(general_expense_params)
-    @general_expense.general_account_id = 1
+    @general_expense.general_account_id = 1 # Default General Account ID
 
     respond_to do |format|
       if @general_expense.save
@@ -61,13 +77,14 @@ class GeneralExpensesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_general_expense
-      @general_expense = GeneralExpense.find(params.expect(:id))
-    end
 
-    # Only allow a list of trusted parameters through.
-    def general_expense_params
-      params.expect(general_expense: [ :title, :amount, :general_account_id ])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_general_expense
+    @general_expense = GeneralExpense.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def general_expense_params
+    params.require(:general_expense).permit(:title, :amount, :general_account_id)
+  end
 end

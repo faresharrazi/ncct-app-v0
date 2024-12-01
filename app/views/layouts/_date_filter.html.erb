@@ -1,0 +1,32 @@
+<%= form_with url: filter_path, method: :get, local: true, class: "mb-4" do %>
+  <div class="row g-3 align-items-center justify-content-center">
+    <!-- Date Range Fields -->
+    <div class="col-auto">
+      <%= date_field_tag :start_date, session[:start_date], 
+                         class: "form-control form-control-sm", 
+                         placeholder: "Start Date" %>
+    </div>
+    <div class="col-auto">
+      <%= date_field_tag :end_date, session[:end_date]&.to_date, 
+                         class: "form-control form-control-sm", 
+                         placeholder: "End Date" %>
+    </div>
+
+    <!-- Month Selector -->
+    <div class="col-auto">
+      <%= month_field_tag :month, 
+                          (session[:start_date] ? Date.parse(session[:start_date]).strftime("%Y-%m") : nil), 
+                          class: "form-control form-control-sm", 
+                          placeholder: "Pick a Month" %>
+    </div>
+
+    <!-- Filter and Clear Buttons -->
+    <div class="col-auto">
+      <%= submit_tag "Filter", class: "btn btn-outline-info btn-sm" %>
+    </div>
+    <div class="col-auto">
+      <%= link_to "Clear Filters", clear_filters_path, 
+                  class: "btn btn-outline-secondary btn-sm" %>
+    </div>
+  </div>
+<% end %>

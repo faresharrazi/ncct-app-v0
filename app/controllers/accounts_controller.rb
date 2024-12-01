@@ -1,20 +1,29 @@
 class AccountsController < ApplicationController
-  before_action :set_account, only: %i[ show edit update destroy ]
+  before_action :set_account, only: %i[show edit update destroy]
 
   # GET /accounts or /accounts.json
   def index
-    @accounts = Account.all
     @general_account = GeneralAccount.find(1)
+    @accounts = Account.all
     @transactions = Transaction.order(date: :desc)
+
+    # Apply Date Range Filters
+    if session[:start_date] && session[:end_date]
+      @transactions = @transactions.where(date: session[:start_date]..session[:end_date])
+    end
   end
 
   # GET /accounts/1 or /accounts/1.json
   def show
+    @accounts = Account.all
     @categories = @account.categories
     @new_category = Category.new
-    @account = Account.find(params[:id])
-    @accounts = Account.all
     @transactions = @account.transactions.order(date: :desc)
+
+    # Apply Date Range Filters
+    if session[:start_date] && session[:end_date]
+      @transactions = @transactions.where(date: session[:start_date]..session[:end_date])
+    end
   end
 
   # GET /accounts/new
@@ -67,28 +76,37 @@ class AccountsController < ApplicationController
     end
   end
 
+  # GET /accounts/:id/categories
   def categories
     @account = Account.find(params[:id])
     render json: @account.categories.select(:id, :name)
   end
 
+  # GET /accounts/:id/transactions
   def transactions
-  @account = Account.find(params[:id])
-  @transactions = @account.transactions
-end
+    @account = Account.find(params[:id])
+    @transactions = @account.transactions
 
+    # Apply Date Range Filters
+    if session[:start_date] && session[:end_date]
+      @transactions = @transactions.where(date: session[:start_date]..session[:end_date])
+    end
+  end
+
+  # GET /accounts/:id/ui_categories
   def ui_categories
     @categories = @account.categories
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_account
-      @account = Account.find(params.expect(:id))
-    end
 
-    # Only allow a list of trusted parameters through.
-    def account_params
-      params.expect(account: [ :title, :percentage, :general_account_id ])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_account
+    @account = Account.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def account_params
+    params.require(:account).permit(:title, :percentage, :general_account_id)
+  end
 end

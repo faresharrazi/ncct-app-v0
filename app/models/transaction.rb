@@ -11,6 +11,10 @@ class Transaction < ApplicationRecord
   after_update :adjust_account_balance
   after_destroy :restore_amount_to_account_balance
 
+  scope :within_date_range, ->(start_date, end_date) {
+    where(date: start_date..end_date) if start_date && end_date
+  }
+
   private
 
   # Deduct transaction amount from account balance after creation

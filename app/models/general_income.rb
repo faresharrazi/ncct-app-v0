@@ -7,6 +7,10 @@ class GeneralIncome < ApplicationRecord
   after_update :reallocate_to_accounts
   after_destroy :update_general_account_net_income
 
+  scope :within_date_range, ->(start_date, end_date) {
+    where(date: start_date..end_date) if start_date && end_date
+  }
+
   private
 
   def allocate_to_accounts

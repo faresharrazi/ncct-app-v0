@@ -20,4 +20,7 @@ Rails.application.routes.draw do
       get :ui_categories # For AJAX-based category fetching (Stimulus)
     end
   end
+
+  get 'filter', to: 'general_accounts#filter'
+  get 'clear_filters', to: 'general_accounts#clear'
 end

@@ -10,15 +10,28 @@ class GeneralAccountsController < ApplicationController
 
   # GET /general_accounts/1 or /general_accounts/1.json
   def show
-    @general_account = GeneralAccount.first # Assuming only one global account
-    @general_incomes = GeneralIncome.all || []
-    @general_expenses = GeneralExpense.all || []
-    @accounts = Account.all
-    @transactions = Transaction.all
+  @general_account = GeneralAccount.first # Assuming only one global account
 
-    # For new income and expense forms
-    @general_income = GeneralIncome.new
-    @general_expense = GeneralExpense.new
+  # Apply date filters if present
+  if session[:start_date].present? && session[:end_date].present?
+    start_date = session[:start_date].to_date
+    end_date = session[:end_date].to_date
+
+    @general_incomes = GeneralIncome.where(created_at: start_date.beginning_of_day..end_date.end_of_day)
+    @general_expenses = GeneralExpense.where(created_at: start_date.beginning_of_day..end_date.end_of_day)
+    @transactions = Transaction.where(date: start_date.beginning_of_day..end_date.end_of_day)
+  else
+    # No filters applied, fetch all data
+    @general_incomes = GeneralIncome.all
+    @general_expenses = GeneralExpense.all
+    @transactions = Transaction.all
+  end
+
+  @accounts = Account.all
+
+  # For new income and expense forms
+  @general_income = GeneralIncome.new
+  @general_expense = GeneralExpense.new
   end
 
   # GET /general_accounts/new
@@ -73,6 +86,37 @@ class GeneralAccountsController < ApplicationController
     @general_account.calculate_net_income
     redirect_to @general_account, notice: "Net income updated successfully."
   end
+
+  def filter
+  # Parse Date Range
+  start_date = params[:start_date].present? ? Date.parse(params[:start_date]) : nil
+  end_date = params[:end_date].present? ? Date.parse(params[:end_date]).end_of_day : nil
+
+  # Parse Month
+  if params[:month].present?
+    year, month = params[:month].split('-').map(&:to_i)
+    start_date = Date.new(year, month, 1)
+    end_date = start_date.end_of_month.end_of_day
+  end
+
+  # Store filters in session
+  session[:start_date] = start_date
+  session[:end_date] = end_date
+
+  redirect_to request.referer || root_path, notice: "Filters applied."
+end
+
+
+def clear
+  # Clear filters from the session
+  session[:start_date] = nil
+  session[:end_date] = nil
+
+  # Redirect back to the current page
+  redirect_back fallback_location: root_path, notice: "Filters cleared."
+end
+
+
 
   private
     # Use callbacks to share common setup or constraints between actions.
