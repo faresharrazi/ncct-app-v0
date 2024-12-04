@@ -2,7 +2,7 @@
 
 # Clear existing data
 # puts "Clearing database..."
-Transaction.destroy_all
+# Transaction.destroy_all
 #  Category.destroy_all
 # Account.destroy_all
 # GeneralIncome.destroy_all
