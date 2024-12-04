@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_11_26_085020) do
+ActiveRecord::Schema[8.0].define(version: 2024_12_04_143920) do
   create_table "accounts", force: :cascade do |t|
     t.string "title"
     t.float "balance", default: 0.0
@@ -18,6 +18,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_26_085020) do
     t.integer "general_account_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.decimal "allocated_balance"
     t.index ["general_account_id"], name: "index_accounts_on_general_account_id"
   end
 

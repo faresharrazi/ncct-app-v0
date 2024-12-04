@@ -31,21 +31,6 @@
         <%= render 'layouts/shared/newnav' %>
       </div>
 
-      <!-- Filter Toggle Button and Partial -->
-      <% if GeneralIncome.exists? || GeneralExpense.exists? %>
-        <div style="background-color: white;">
-          <!-- Toggle Button -->
-          <button class="btn btn-outline-info mt-2 btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#filterPartial" aria-expanded="false" aria-controls="filterPartial" aria-label="Toggle Date Filter">
-            <i class="bi bi-funnel"></i> Toggle Filter
-          </button>
-
-          <!-- Filter Partial -->
-          <div class="collapse fade" id="filterPartial">
-            <%= render 'layouts/shared/date_filter' %>
-          </div>
-        </div>
-      <% end %>
-
       <!-- Main Content -->
       <div class="container mt-4 pt-1">
         <%= render 'layouts/shared/notice' %>

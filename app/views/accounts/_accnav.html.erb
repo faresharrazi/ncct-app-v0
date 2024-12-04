@@ -1,32 +1,60 @@
-<div class="container p-2">
-  <div class="row g-3 justify-content-center">
+<div class="container py-3">
+  <div class="row g-2 justify-content-center">
     <% @accounts.each do |account| %>
-      <div class="col-auto">
+      <div class="col-md-2 mb-2">
         <% if current_page?(account_path(account)) %>
-          <button class="btn btn-secondary btn-sm shadow-sm text-white" style="cursor: not-allowed;" disabled>
-            <span class="d-block text-truncate" title="<%= account.title %>"><%= truncate(account.title, length: 10) %></span>
-            <span><%= number_with_precision(account.balance, precision: 2) %>€</span>
-          </button>
+          <!-- Active Account Card (Disabled) -->
+          <div class="card border-secondary text-center shadow-sm">
+            <div class="card-body py-2 px-1">
+              <h6 class="card-title text-secondary mb-1">
+                <strong><%= truncate(account.title, length: 15) %></strong>
+              </h6>
+              <p class="card-text text-dark m-0">
+                <%= number_with_precision(account.balance, precision: 2) %>€
+              </p>
+            </div>
+          </div>
         <% else %>
-          <%= link_to account_path(account), class: "btn btn-outline-info btn-sm shadow-sm text-decoration-none" do %>
-            <span class="d-block text-truncate" title="<%= account.title %>"><%= truncate(account.title, length: 10) %></span>
-            <span><%= number_with_precision(account.balance, precision: 2) %>€</span>
+          <!-- Inactive Account Card (Clickable) -->
+          <%= link_to account_path(account), class: "card border-info text-decoration-none shadow-sm" do %>
+            <div class="card-body py-2 px-1 text-center">
+              <h6 class="card-title text-info mb-1">
+                <strong><%= truncate(account.title, length: 15) %></strong>
+              </h6>
+              <p class="card-text text-dark m-0">
+                <%= number_with_precision(account.balance, precision: 2) %>€
+              </p>
+            </div>
           <% end %>
         <% end %>
       </div>
     <% end %>
 
     <% if @general_account.net_income > 0 && Account.sum(:percentage) < 100 %>
-      <div class="col-auto">
+      <div class="col-md-2 mb-2">
         <% if current_page?(new_account_path) %>
-          <button class="btn btn-secondary btn-sm shadow-sm text-white" style="cursor: not-allowed;" disabled>
-            <span class="d-block">+ Create Account</span>
-            <span>Available: <%= 100 - Account.sum(:percentage) %>%</span>
-          </button>
+          <!-- Disabled Create Account Card -->
+          <div class="card border-secondary text-center shadow-sm">
+            <div class="card-body py-2 px-1">
+              <h6 class="card-title text-secondary mb-1">
+                <strong>+ Create Account</strong>
+              </h6>
+              <p class="card-text text-dark m-0">
+                Available: <%= 100 - Account.sum(:percentage) %>%
+              </p>
+            </div>
+          </div>
         <% else %>
-          <%= link_to new_account_path, class: "btn btn-outline-primary btn-sm shadow-sm text-decoration-none" do %>
-            <span class="d-block">+ Create Account</span>
-            <span>Available: <%= 100 - Account.sum(:percentage) %>%</span>
+          <!-- Link to Create Account -->
+          <%= link_to new_account_path, class: "card border-primary text-decoration-none shadow-sm" do %>
+            <div class="card-body py-2 px-1 text-center">
+              <h6 class="card-title text-primary mb-1">
+                <strong>+ Create Account</strong>
+              </h6>
+              <p class="card-text text-dark m-0">
+                Available: <%= 100 - Account.sum(:percentage) %>%
+              </p>
+            </div>
           <% end %>
         <% end %>
       </div>

@@ -44,6 +44,8 @@ class AccountsController < ApplicationController
 
     respond_to do |format|
       if @account.save
+        # Immediately update allocated balance and balance after saving
+        @account.set_allocated_balance
         format.html { redirect_to @account, notice: "Account was successfully created." }
         format.json { render :show, status: :created, location: @account }
       else
@@ -57,6 +59,7 @@ class AccountsController < ApplicationController
   def update
     respond_to do |format|
       if @account.update(account_params)
+        @account.set_allocated_balance # Ensure balance and allocated balance are updated on percentage changes
         format.html { redirect_to @account, notice: "Account was successfully updated." }
         format.json { render :show, status: :ok, location: @account }
       else

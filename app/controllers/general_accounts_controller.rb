@@ -6,6 +6,8 @@ class GeneralAccountsController < ApplicationController
     @general_accounts = GeneralAccount.all
     @accounts = Account.all
     @transactions = Transaction.all
+    @general_income = GeneralIncome.all
+    @general_expense = GeneralExpense.all
   end
 
   # GET /general_accounts/1 or /general_accounts/1.json
@@ -94,7 +96,7 @@ class GeneralAccountsController < ApplicationController
 
   # Parse Month
   if params[:month].present?
-    year, month = params[:month].split('-').map(&:to_i)
+    year, month = params[:month].split("-").map(&:to_i)
     start_date = Date.new(year, month, 1)
     end_date = start_date.end_of_month.end_of_day
   end

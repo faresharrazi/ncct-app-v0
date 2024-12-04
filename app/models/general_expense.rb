@@ -3,36 +3,46 @@ class GeneralExpense < ApplicationRecord
 
   validates :title, :amount, presence: true
 
-  after_create :allocate_to_accounts
-  after_update :reallocate_to_accounts
-  after_destroy :update_general_account_net_income
-
-  scope :within_date_range, ->(start_date, end_date) {
-    where(date: start_date..end_date) if start_date && end_date
-  }
+  # Callbacks for creating, updating, and destroying expenses
+  after_create :update_accounts_on_create
+  after_update :update_accounts_on_update
+  after_destroy :update_accounts_on_destroy
 
   private
 
-  def allocate_to_accounts
-    general_account.accounts.each do |account|
-      reduction = amount * (account.percentage / 100.0)
-      account.update!(balance: account.balance - reduction)
-    end
+  # Allocate expense to accounts and recalculate net income
+  def update_accounts_on_create
+    distribute_to_accounts(-amount)
+    update_allocated_balances
     general_account.calculate_net_income
   end
 
-  def reallocate_to_accounts
-    previous_amount = amount_before_last_save
+  # Reallocate expense difference to accounts and recalculate net income
+  def update_accounts_on_update
+    previous_amount = amount_before_last_save || 0
     difference = amount - previous_amount
-
-    general_account.accounts.each do |account|
-      adjustment = difference * (account.percentage / 100.0)
-      account.update!(balance: account.balance - adjustment)
-    end
+    distribute_to_accounts(-difference)
+    update_allocated_balances
     general_account.calculate_net_income
   end
 
-  def update_general_account_net_income
+  # Reverse expense allocation on destroy and recalculate net income
+  def update_accounts_on_destroy
+    distribute_to_accounts(amount)
+    update_allocated_balances
     general_account.calculate_net_income
+  end
+
+  # Distribute expense adjustments to accounts
+  def distribute_to_accounts(amount_to_distribute)
+    general_account.accounts.each do |account|
+      adjustment = amount_to_distribute * (account.percentage / 100.0)
+      account.update!(balance: [ account.balance + adjustment, 0 ].max) # Ensure balance is not negative
+    end
+  end
+
+  # Update allocated balances for accounts
+  def update_allocated_balances
+    general_account.accounts.each(&:set_allocated_balance)
   end
 end

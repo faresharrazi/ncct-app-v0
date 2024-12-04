@@ -1,3 +1,4 @@
+<!-- First Nav Bar -->
 <nav class="navbar navbar-light bg-white mb-4">
   <div class="container-fluid justify-content-center py-3">
     <!-- General Account Net Income Button -->
@@ -14,79 +15,53 @@
   </div>
 </nav>
 
-<!-- Aligned Progress Bars -->
-<div class="my-4">
-  <% @accounts.each_with_index do |account, index| %>
-    <% remaining_percentage = ((account.balance - account.transactions.sum(&:amount)) / account.balance * 100).round(2) %>
-    <% progress_bar_class = 
-      if remaining_percentage > 50
-        "bg-success" # Light green
-      elsif remaining_percentage >= 20
-        "bg-warning" # Light orange
-      else
-        "bg-danger" # Light red
-      end %>
-
-    <div class="d-flex align-items-center mb-3">
-      <!-- Progress Bar with Fixed Container -->
-      <div class="progress flex-grow-1" style="height: 30px; width: 100%; background-color: #e9ecef;">
-        <div class="progress-bar <%= progress_bar_class %>" 
-             role="progressbar" 
-             aria-label="<%= account.title %>" 
-             aria-valuenow="<%= account.balance - account.transactions.sum(&:amount) %>" 
-             aria-valuemin="0" 
-             aria-valuemax="<%= account.balance %>" 
-             style="width: <%= remaining_percentage %>%;">
-          <!-- Account Title and Balance Inside the Bar -->
-          <%= link_to "#{account.title}: #{(account.balance - account.transactions.sum(&:amount)).round(2)}€", 
-                      account_path(account), 
-                      style: "text-decoration: none; color: white;" %>
-        </div>
-      </div>
-    </div>
-  <% end %>
-</div>
-
-
-
-
-<!-- Clickable Cards for Totals -->
-<div class="row text-center my-4">
-  <% if Account.exists? %>
-    <!-- All Transactions Card -->
-    <div class="col-md-4 mb-3">
+<!-- Second Nav Bar -->
+<div class="row text-center justify-content-center my-4">
+  <!-- All Transactions Card -->
+  <% if @navbar_transactions.present? && @navbar_transactions.any? %>
+    <div class="col-md-2 mb-2">
       <%= link_to transactions_path, class: "card border-primary text-decoration-none" do %>
-        <div class="card-body">
-          <h5 class="card-title text-primary">All Transactions</h5>
-          <p class="card-text text-dark">
-            <%= number_to_currency(@transactions_total, unit: "€") %>
-          </p>
-        </div>
-      <% end %>
-    </div>
-
-    <!-- Global Income Card -->
-    <div class="col-md-4 mb-3">
-      <%= link_to general_incomes_path, class: "card border-success text-decoration-none" do %>
-        <div class="card-body">
-          <h5 class="card-title text-success">Global Income</h5>
-          <p class="card-text text-dark">
-            <%= number_to_currency(@global_income_total, unit: "€") %>
-          </p>
-        </div>
-      <% end %>
-    </div>
-
-    <!-- Global Expense Card -->
-    <div class="col-md-4 mb-3">
-      <%= link_to general_expenses_path, class: "card border-danger text-decoration-none" do %>
-        <div class="card-body">
-          <h5 class="card-title text-danger">Global Expense</h5>
-          <p class="card-text text-dark">
-            <%= number_to_currency(@global_expense_total, unit: "€") %>
+        <div class="card-body py-2 px-1">
+          <h6 class="card-title text-primary mb-1">
+            <i class="bi bi-list-task"></i> Transactions
+          </h6>
+          <p class="card-text text-dark m-0">
+            <%= number_to_currency(@navbar_transactions.sum(:amount), unit: "€") %>
           </p>
         </div>
       <% end %>
     </div>
   <% end %>
+
+  <!-- Global Income Card -->
+  <div class="col-md-2 mb-2">
+    <%= link_to general_incomes_path, class: "card border-success text-decoration-none" do %>
+      <div class="card-body py-2 px-1">
+        <h6 class="card-title text-success mb-1">
+          <i class="bi bi-arrow-down-circle"></i> General Income
+        </h6>
+        <p class="card-text text-dark m-0">
+          <%= number_to_currency(@navbar_general_incomes.sum(:amount) || 0, unit: "€") %>
+        </p>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Global Expense Card -->
+  <div class="col-md-2 mb-2">
+    <%= link_to general_expenses_path, class: "card border-danger text-decoration-none" do %>
+      <div class="card-body py-2 px-1">
+        <h6 class="card-title text-danger mb-1">
+          <i class="bi bi-arrow-up-circle"></i> General Expense
+        </h6>
+        <p class="card-text text-dark m-0">
+          <%= number_to_currency(@navbar_general_expenses.sum(:amount) || 0, unit: "€") %>
+        </p>
+      </div>
+    <% end %>
+  </div>
 </div>
+
+<%= render 'layouts/shared/accordion_account' %>
+
+<%= render 'accounts/accnav' %>

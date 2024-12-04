@@ -6,9 +6,10 @@ class ApplicationController < ActionController::Base
   private
 
   def set_navbar_data
-    @general_account = GeneralAccount.find_by(id: 1) # Adjust the ID if necessary
+    @general_account = GeneralAccount.find_by(id: 1) # Adjust the ID as necessary
     @accounts = Account.all
-    @transactions = Transaction.all
+    @navbar_general_incomes = GeneralIncome.all || []
+    @navbar_general_expenses = GeneralExpense.all || []
+    @navbar_transactions = Transaction.all || []
   end
-
 end

@@ -1,0 +1,55 @@
+<% if @accounts.present? %>
+  <!-- Accordion for Accounts -->
+  <div class="accordion my-4" id="accountsAccordion">
+    <!-- Accordion Header -->
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="accountsAccordionHeader">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#accountsAccordionBody" aria-expanded="false" aria-controls="accountsAccordionBody">
+          Accounts Overview
+        </button>
+      </h2>
+      
+      <!-- Accordion Body -->
+      <div id="accountsAccordionBody" class="accordion-collapse collapse" aria-labelledby="accountsAccordionHeader" data-bs-parent="#accountsAccordion">
+        <div class="accordion-body">
+          <!-- Progress Bars for Accounts -->
+          <% @accounts.each_with_index do |account, index| %>
+            <% remaining_percentage = 
+              if account.allocated_balance.present? && account.allocated_balance > 0
+                ((account.balance / account.allocated_balance) * 100).round(2)
+              else
+                0
+              end
+            %>
+            <% progress_bar_class = 
+              if remaining_percentage > 50
+                "bg-success" # Light green
+              elsif remaining_percentage >= 20
+                "bg-warning" # Light orange
+              else
+                "bg-danger" # Light red
+              end %>
+
+            <div class="d-flex align-items-center mb-3">
+              <!-- Progress Bar with Fixed Container -->
+              <div class="progress flex-grow-1" style="height: 30px; width: 100%; background-color: #e9ecef;">
+                <div class="progress-bar <%= progress_bar_class %>" 
+                     role="progressbar" 
+                     aria-label="<%= account.title %>" 
+                     aria-valuenow="<%= account.balance %>" 
+                     aria-valuemin="0" 
+                     aria-valuemax="<%= account.allocated_balance || 0 %>" 
+                     style="width: <%= remaining_percentage %>%;">
+                  <!-- Account Title and Balance Inside the Bar -->
+                  <%= link_to "#{account.title}: #{number_to_currency(account.balance, unit: '€')}", 
+                              account_path(account), 
+                              style: "text-decoration: none; color: white;" %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>
