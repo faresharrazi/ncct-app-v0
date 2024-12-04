@@ -1,0 +1,70 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm mb-4">
+  <div class="container-fluid">
+    <!-- Total Income Button -->
+    <div class="d-flex align-items-center">
+      <%= button_to general_account_path(1), method: :get, class: "btn btn-primary btn-sm me-3", form_class: "d-inline" do %>
+        Total Income: <%= number_to_currency(@general_account.net_income, unit: "€") %>
+      <% end %>
+    </div>
+
+    <!-- Navbar Toggle for Smaller Screens -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarContent">
+      <!-- Navigation Links -->
+      <ul class="navbar-nav me-auto">
+        <!-- General Income -->
+        <li class="nav-item">
+          <%= button_to general_incomes_path, method: :get, 
+                        class: current_page?(general_incomes_path) ? "btn btn-outline-success btn-sm me-2" : "btn btn-success btn-sm me-2", 
+                        form_class: "d-inline" do %>
+            General Income
+          <% end %>
+        </li>
+
+        <!-- General Expense -->
+        <li class="nav-item">
+          <%= button_to general_expenses_path, method: :get, 
+                        class: current_page?(general_expenses_path) ? "btn btn-outline-danger btn-sm me-2" : "btn btn-danger btn-sm me-2", 
+                        form_class: "d-inline" do %>
+            General Expense
+          <% end %>
+        </li>
+
+        <!-- Accounts -->
+        <% if @general_account.net_income > 0 || Account.exists? %>
+          <li class="nav-item">
+            <%= button_to accounts_path, method: :get, 
+                          class: current_page?(accounts_path) ? "btn btn-outline-primary btn-sm me-2" : "btn btn-primary btn-sm me-2", 
+                          form_class: "d-inline" do %>
+              Accounts
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
+
+      <!-- Transactions and Create Transaction -->
+      <div class="d-flex">
+        <% if Transaction.exists? %>
+          <!-- Transactions -->
+          <%= button_to transactions_path, method: :get, 
+                            class: current_page?(transactions_path) ? "btn btn-outline-primary btn-sm me-2" : "btn btn-primary btn-sm me-2", 
+                            form_class: "d-inline" do %>
+            All Transactions
+          <% end %>
+        <% end %>
+
+        <% if Account.exists? %>
+          <!-- Create Transaction -->
+          <%= button_to "New Transaction", new_transaction_path, method: :get, 
+                            class: current_page?(new_transaction_path) ? "btn btn-outline-primary btn-sm px-3" : "btn btn-primary btn-sm px-3", 
+                            role: "button" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</nav>
+
+
